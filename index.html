@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AlgoSphere — Interactive algorithm-learning studio for computer science students. Explore sorting and searching algorithms with step-by-step visualizations, synchronized pseudocode, and complexity analysis.">
+  <meta name="keywords" content="algorithm visualizer, sorting algorithms, searching algorithms, bubble sort, quick sort, binary search, data structures, computer science, SDE interview preparation">
+  <meta name="theme-color" content="#0B1020">
+  <title>AlgoSphere — Explore algorithms beyond the code</title>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Application Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/visualizer.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <!-- Sidebar backdrop for mobile view -->
+    <div id="sidebar-backdrop" class="sidebar-backdrop" aria-hidden="true"></div>
+
+    <!-- Desktop & Mobile Sidebar Navigation -->
+    <aside id="app-sidebar" class="app-sidebar" aria-label="Main Navigation">
+      <!-- Injected by sidebar.js -->
+    </aside>
+
+    <!-- Main Content Container -->
+    <div class="app-main">
+      <!-- Sticky Top Header -->
+      <header id="app-header" class="app-header">
+        <!-- Injected by header.js -->
+      </header>
+
+      <!-- Dynamic Page Content Viewport -->
+      <main id="app-content" class="app-content" role="main">
+        <!-- Injected by router.js & page controllers -->
+      </main>
+    </div>
+
+    <!-- Global Toast Container -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+  </div>
+
+  <!-- Main ES Module Bootstrap -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
