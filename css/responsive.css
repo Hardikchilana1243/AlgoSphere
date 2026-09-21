@@ -1,0 +1,126 @@
+/* AlgoSphere - Responsive Breakpoints & Mobile Adaptations */
+
+/* Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+  :root {
+    --sidebar-width: 220px;
+  }
+
+  .app-content {
+    padding: var(--space-5);
+  }
+
+  .app-header {
+    padding: 0 var(--space-5);
+  }
+
+  .visualizer-workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile Devices (max-width: 768px) */
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 260px;
+  }
+
+  .mobile-menu-btn {
+    display: inline-flex;
+  }
+
+  .app-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .app-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-backdrop.active {
+    display: block;
+  }
+
+  .app-header {
+    padding: 0 var(--space-4);
+  }
+
+  .app-content {
+    padding: var(--space-4);
+  }
+
+  .hero-title {
+    font-size: var(--text-2xl) !important;
+  }
+
+  .stat-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .visualizer-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+
+  .controls-button-group {
+    justify-content: center;
+  }
+
+  .controls-scrubber-group {
+    width: 100%;
+  }
+
+  .controls-speed-group {
+    justify-content: space-between;
+  }
+
+  .sorting-stage {
+    gap: 4px;
+    height: 220px;
+  }
+
+  .bar-value {
+    font-size: 9px;
+    top: -18px;
+  }
+
+  .search-cell {
+    width: 38px;
+    height: 38px;
+    font-size: var(--text-sm);
+  }
+
+  .search-cell-column {
+    width: 42px;
+  }
+
+  .pointer-slot-top {
+    height: 30px;
+  }
+}
+
+/* Small Screens (max-width: 480px) */
+@media (max-width: 480px) {
+  .stat-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .sorting-stage {
+    gap: 2px;
+    padding: var(--space-2) 0 0;
+  }
+
+  .bar-value {
+    display: none; /* Hide top bar text on ultra small screens to prevent overlap, index stays visible */
+  }
+
+  .header-badge-text {
+    display: none;
+  }
+}
