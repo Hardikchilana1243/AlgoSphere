@@ -26,9 +26,9 @@ export class VisualizerRenderer {
   renderSortingBars(array, highlights = {}) {
     if (!this.stageEl) return;
 
-    const maxVal = Math.max(...array, 100);
+    const maxVal = Math.max(...array, 1);
     const html = array.map((val, idx) => {
-      const heightPercent = Math.max(10, Math.round((val / maxVal) * 88));
+      const heightPercent = Math.max(12, Math.round((val / maxVal) * 88));
       const state = highlights[idx] || 'default';
       const stateClass = `state-${state}`;
 

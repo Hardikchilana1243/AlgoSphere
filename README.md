@@ -7,6 +7,48 @@ Built specifically to demonstrate strong frontend engineering skills, clean arch
 
 ---
 
+## 📋 Project Proposal
+
+### 1. Problem Statement
+Many computer science students and software engineering job candidates struggle to develop an intuitive mental model for how fundamental algorithms manipulate memory, traverse data structures, and compare elements. Traditional textbooks and static code snippets fail to capture the dynamic time-evolution of algorithms, leading to rote memorization rather than deep conceptual comprehension.
+
+### 2. Project Goal & Educational Value
+**AlgoSphere** bridges this gap by creating an interactive, browser-native algorithm studio where learners can:
+- Observe algorithm state transitions with deterministic, step-by-step time-travel.
+- Connect runtime behavior directly to synchronized line-by-line pseudocode.
+- Inspect exact asymptotic complexities ($O(n)$, $O(n^2)$, $O(\log n)$) and see how optimizations (such as early-exit flags) operate in practice.
+- Experiment with customized datasets, duplicates, edge cases, and inverted distributions.
+
+### 3. Target Audience
+- Computer Science undergraduate and graduate students.
+- Coding bootcamp participants and self-taught developers.
+- Software Development Engineer (SDE) interview candidates preparing for technical rounds.
+
+### 4. Technical Scope & Architecture
+- **Strict Web Fundamentals**: Built with pure HTML5, vanilla CSS3, and modern ES6+ JavaScript modules. No external JavaScript libraries, frameworks, build tools, or backend servers.
+- **Responsive Architecture**: Fluid layout supporting mobile, tablet, and widescreen desktop displays.
+- **Client Persistence**: Web Storage (`localStorage`) integration for user settings, animation preferences, and learning progress tracking.
+- **Event-Driven Visualizer**: Clean decoupling between pure algorithm generators (`generateBubbleSortSteps`) and the DOM renderer, supporting $O(1)$ time-travel stepping without re-execution artifacts.
+
+---
+
+## 📅 Development Roadmap & Milestone Status
+
+- [x] **Day 1 — Bubble Sort Visualizer**:
+  - Implemented decoupled Bubble Sort step generator with complete event snapshots.
+  - Full playback controls (Play, Pause, Step Next, Step Prev, Reset Visualization, Speed adjustment).
+  - Custom dataset input with bounds validation (1–25 elements, integers 1–100, duplicates, edge cases).
+  - Vertical bar visualization with standard AlgoSphere developer-studio color states.
+  - Live 5-metric telemetry (Algorithm, Array Size, Step Progress, Comparisons, Swaps).
+  - Synchronized pseudocode highlighting.
+  - Theory card with $O(n)$ best-case early-exit optimization documentation.
+- [ ] **Day 2 — Selection & Insertion Sort Visualizers** (Upcoming)
+- [ ] **Day 3 — Divide-and-Conquer Sorting (Merge & Quick Sort)** (Upcoming)
+- [ ] **Day 4 — Searching Visualizers (Linear & Binary Search)** (Upcoming)
+- [ ] **Day 5+ — Practice Sets, CRUD Module & Advanced Features** (Upcoming)
+
+---
+
 ## 🎨 Design Direction: Dark Developer Studio
 AlgoSphere is styled as a modern developer tool with a focused, professional SaaS aesthetic:
 - **Canvas Background**: Deep navy (`#0B1020`)

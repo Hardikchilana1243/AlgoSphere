@@ -112,7 +112,8 @@
   box-shadow: 0 0 12px var(--warning-glow);
 }
 
-.bar-element.state-moving {
+.bar-element.state-moving,
+.bar-element.state-swapping {
   background-color: var(--state-moving); /* Pink #FB7185 */
   box-shadow: 0 0 12px var(--danger-glow);
 }
@@ -407,7 +408,7 @@
 .legend-chip.default { background-color: var(--state-default); }
 .legend-chip.comparing { background-color: var(--state-comparing); }
 .legend-chip.current { background-color: var(--state-current); }
-.legend-chip.moving { background-color: var(--state-moving); }
+.legend-chip.moving, .legend-chip.swapping { background-color: var(--state-moving); }
 .legend-chip.sorted { background-color: var(--state-sorted); }
 .legend-chip.eliminated { background-color: var(--state-eliminated); border: 1px solid #334155; }
 

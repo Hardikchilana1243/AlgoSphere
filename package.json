@@ -1,0 +1,14 @@
+{
+  "name": "algosphere",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Interactive algorithm-learning studio",
+  "type": "module",
+  "scripts": {
+    "start": "serve .",
+    "dev": "serve ."
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}

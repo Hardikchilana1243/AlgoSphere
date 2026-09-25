@@ -33,7 +33,8 @@ const SORTING_GENERATORS = {
 export class SortingPage {
   constructor() {
     this.currentAlgoKey = 'bubbleSort';
-    this.currentArray = generateRandomArray(12);
+    this.currentArray = [45, 23, 78, 12, 56, 89, 34];
+    this.initialArray = [...this.currentArray];
     this.stepEngine = new StepEngine();
     this.renderer = null;
     this.animController = null;
@@ -77,41 +78,63 @@ export class SortingPage {
 
         <!-- Input & Dataset Controls Toolbar -->
         <div class="panel" style="padding: var(--space-4);">
-          <div style="display: grid; grid-template-columns: 1fr auto auto; gap: var(--space-3); align-items: flex-end;">
-            <div class="form-group" style="margin-bottom: 0;">
-              <label for="array-input" class="form-label">
-                <span>Custom Array (Comma-separated numbers 1–100, 5–25 items)</span>
-                <span id="array-count-badge" style="font-family: var(--font-mono); color: var(--secondary);">12 items</span>
-              </label>
-              <input 
-                type="text" 
-                id="array-input" 
-                class="form-input" 
-                value="${this.currentArray.join(', ')}" 
-                placeholder="e.g. 45, 23, 78, 12, 56, 89, 34"
-              />
+          <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+            <div style="display: grid; grid-template-columns: 1fr auto; gap: var(--space-3); align-items: flex-end;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="array-input" class="form-label">
+                  <span>Custom Array (Comma-separated integers 1–100, 1–25 items)</span>
+                  <span id="array-count-badge" style="font-family: var(--font-mono); color: var(--secondary);">${this.currentArray.length} items</span>
+                </label>
+                <div style="display: flex; gap: var(--space-2);">
+                  <input 
+                    type="text" 
+                    id="array-input" 
+                    class="form-input" 
+                    value="${this.currentArray.join(', ')}" 
+                    placeholder="e.g. 5, 3, 8, 1, 2"
+                    style="flex: 1;"
+                  />
+                  <button class="btn btn-primary" id="apply-array-btn" title="Apply Custom Array (or press Enter)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>Apply</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Quick Action Buttons -->
+              <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+                <button class="btn btn-secondary" id="generate-random-btn" title="Generate a fresh random array">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                  </svg>
+                  <span>Random Array</span>
+                </button>
+
+                <div class="form-group" style="margin-bottom: 0; min-width: 140px;">
+                  <select id="preset-select" class="form-select" title="Preset datasets">
+                    <option value="" disabled selected>Preset...</option>
+                    <option value="nearlySorted">Nearly Sorted</option>
+                    <option value="reverse">Reverse Sorted</option>
+                    <option value="fewUnique">Few Unique</option>
+                    <option value="alreadySorted">Already Sorted</option>
+                  </select>
+                </div>
+
+                <button class="btn btn-outline" id="reset-array-btn" title="Reset array to initial state">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                    <path d="M3 3v5h5"/>
+                  </svg>
+                  <span>Reset Array</span>
+                </button>
+              </div>
             </div>
 
-            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
-              <label for="preset-select" class="form-label">Preset</label>
-              <select id="preset-select" class="form-select">
-                <option value="random">Random</option>
-                <option value="nearlySorted">Nearly Sorted</option>
-                <option value="reverse">Reverse Sorted</option>
-                <option value="fewUnique">Few Unique</option>
-              </select>
-            </div>
-
-            <button class="btn btn-secondary" id="generate-array-btn">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
-              </svg>
-              <span>Generate Array</span>
-            </button>
+            <!-- Error Alert Container -->
+            <div id="validation-error-alert" class="alert alert-danger" style="display: none;"></div>
           </div>
-
-          <!-- Error Alert Container -->
-          <div id="validation-error-alert" class="alert alert-danger" style="display: none; margin-top: var(--space-3);"></div>
         </div>
 
         <!-- Main Workspace Split: Stage + Side Panel -->
@@ -124,23 +147,23 @@ export class SortingPage {
               <div class="visualizer-legend">
                 <div class="legend-item">
                   <span class="legend-chip default"></span>
-                  <span>Default</span>
+                  <span>Normal (Blue)</span>
                 </div>
                 <div class="legend-item">
                   <span class="legend-chip comparing"></span>
-                  <span>Active Comparison</span>
+                  <span>Comparing (Violet)</span>
                 </div>
                 <div class="legend-item">
                   <span class="legend-chip current"></span>
-                  <span>Current Index</span>
+                  <span>Current Element (Amber)</span>
                 </div>
                 <div class="legend-item">
-                  <span class="legend-chip moving"></span>
-                  <span>Moving / Swapping</span>
+                  <span class="legend-chip swapping"></span>
+                  <span>Swapping (Pink)</span>
                 </div>
                 <div class="legend-item">
                   <span class="legend-chip sorted"></span>
-                  <span>Sorted</span>
+                  <span>Sorted (Green)</span>
                 </div>
               </div>
 
@@ -214,14 +237,26 @@ export class SortingPage {
 
           <!-- Side Information Column (Metrics, Pseudocode, Complexity) -->
           <div class="visualizer-side-column">
-            <!-- Telemetry Cards -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3);">
+            <!-- Telemetry Statistics Cards (Live updates for 5 required stats) -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: var(--space-3);">
+              <div class="stat-card">
+                <span class="stat-label">Algorithm</span>
+                <span class="stat-value" id="metric-algorithm" style="font-size: var(--text-base); color: var(--primary);">${algoMeta.name}</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">Array Size</span>
+                <span class="stat-value" id="metric-array-size" style="color: var(--text);">${this.currentArray.length} items</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">Progress</span>
+                <span class="stat-value" id="metric-step-progress" style="font-size: var(--text-base); color: var(--text);">Step 1 of 1</span>
+              </div>
               <div class="stat-card">
                 <span class="stat-label">Comparisons</span>
                 <span class="stat-value" id="metric-comparisons" style="color: var(--secondary);">0</span>
               </div>
               <div class="stat-card">
-                <span class="stat-label">Swaps / Writes</span>
+                <span class="stat-label">Swaps</span>
                 <span class="stat-value" id="metric-swaps" style="color: var(--danger);">0</span>
               </div>
             </div>
@@ -278,6 +313,10 @@ export class SortingPage {
                   <span>Stability: <strong style="color: var(--text);">${algoMeta.complexities.stability}</strong></span>
                   <span>In-Place: <strong style="color: var(--text);">${algoMeta.complexities.inPlace}</strong></span>
                 </div>
+
+                <div id="optimization-note" style="margin-top: var(--space-3); padding: var(--space-2) var(--space-3); background-color: var(--panel-elevated); border-radius: var(--radius-sm); font-size: var(--text-xs); color: var(--muted); line-height: 1.4;">
+                  <strong style="color: var(--success);">Best Case O(n):</strong> Enabled by the early-exit flag. When the array is already sorted, zero swaps occur in Pass 1 and execution terminates immediately.
+                </div>
               </div>
             </div>
           </div>
@@ -333,11 +372,30 @@ export class SortingPage {
       this.renderer.renderCounters(step.counters);
       this.renderer.renderStepProgress(meta.index, meta.total);
 
+      // Update live statistics cards
+      const algoMetric = container.querySelector('#metric-algorithm');
       const algoMeta = ALGORITHM_METADATA[this.currentAlgoKey];
-      this.renderer.renderPseudocode(algoMeta.pseudocode, step.codeLine);
+      if (algoMetric && algoMeta) {
+        algoMetric.textContent = algoMeta.name;
+      }
+
+      const arraySizeMetric = container.querySelector('#metric-array-size');
+      if (arraySizeMetric) {
+        const count = step.currentArray ? step.currentArray.length : this.currentArray.length;
+        arraySizeMetric.textContent = `${count} item${count === 1 ? '' : 's'}`;
+      }
+
+      const stepProgMetric = container.querySelector('#metric-step-progress');
+      if (stepProgMetric) {
+        stepProgMetric.textContent = `Step ${meta.index + 1} of ${Math.max(1, meta.total)}`;
+      }
+
+      if (algoMeta) {
+        this.renderer.renderPseudocode(algoMeta.pseudocode, step.codeLine || step.pseudocodeLine || 1);
+      }
 
       const activeBadge = container.querySelector('#active-line-badge');
-      if (activeBadge) activeBadge.textContent = `Line ${step.codeLine}`;
+      if (activeBadge) activeBadge.textContent = `Line ${step.codeLine || step.pseudocodeLine || 1}`;
 
       this.controls.updateStepButtons(meta);
 
@@ -360,44 +418,80 @@ export class SortingPage {
       this.rebuildStepsAndRender();
     });
 
-    // Bind Array Input and presets
+    // Bind Array Input, action buttons, and presets
     const arrayInput = container.querySelector('#array-input');
+    const applyArrayBtn = container.querySelector('#apply-array-btn');
     const presetSelect = container.querySelector('#preset-select');
-    const generateBtn = container.querySelector('#generate-array-btn');
+    const generateRandomBtn = container.querySelector('#generate-random-btn');
+    const resetArrayBtn = container.querySelector('#reset-array-btn');
     const countBadge = container.querySelector('#array-count-badge');
     const errorAlert = container.querySelector('#validation-error-alert');
 
     const updateArrayFromData = (arr) => {
+      this.animController.pause();
       this.currentArray = arr;
       arrayInput.value = arr.join(', ');
       countBadge.textContent = `${arr.length} items`;
       errorAlert.style.display = 'none';
+      errorAlert.textContent = '';
       this.rebuildStepsAndRender();
     };
 
-    generateBtn.addEventListener('click', () => {
-      const preset = presetSelect.value;
-      let newArr;
-      if (preset === 'nearlySorted') newArr = generateNearlySortedArray(12);
-      else if (preset === 'reverse') newArr = generateReverseSortedArray(12);
-      else if (preset === 'fewUnique') newArr = generateFewUniqueArray(12);
-      else newArr = generateRandomArray(12);
-      updateArrayFromData(newArr);
-    });
-
-    arrayInput.addEventListener('change', () => {
+    const applyCustomArray = () => {
       const val = arrayInput.value;
-      const res = Validation.parseArrayInput(val, 5, 25, 1, 100);
+      const res = Validation.parseArrayInput(val, 1, 25, 1, 100);
       if (!res.isValid) {
         errorAlert.textContent = res.error;
         errorAlert.style.display = 'block';
       } else {
-        errorAlert.style.display = 'none';
-        this.currentArray = res.data;
-        countBadge.textContent = `${res.data.length} items`;
-        this.rebuildStepsAndRender();
+        this.initialArray = [...res.data];
+        updateArrayFromData(res.data);
       }
-    });
+    };
+
+    if (applyArrayBtn) {
+      applyArrayBtn.addEventListener('click', applyCustomArray);
+    }
+
+    if (arrayInput) {
+      arrayInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          applyCustomArray();
+        }
+      });
+      arrayInput.addEventListener('change', applyCustomArray);
+    }
+
+    if (generateRandomBtn) {
+      generateRandomBtn.addEventListener('click', () => {
+        const newArr = generateRandomArray(10);
+        this.initialArray = [...newArr];
+        updateArrayFromData(newArr);
+      });
+    }
+
+    if (presetSelect) {
+      presetSelect.addEventListener('change', (e) => {
+        const preset = e.target.value;
+        let newArr;
+        if (preset === 'nearlySorted') newArr = generateNearlySortedArray(10);
+        else if (preset === 'reverse') newArr = generateReverseSortedArray(10);
+        else if (preset === 'fewUnique') newArr = generateFewUniqueArray(10);
+        else if (preset === 'alreadySorted') newArr = [10, 18, 25, 36, 47, 58, 69, 74, 85, 92];
+        else newArr = generateRandomArray(10);
+        
+        this.initialArray = [...newArr];
+        updateArrayFromData(newArr);
+        presetSelect.value = '';
+      });
+    }
+
+    if (resetArrayBtn) {
+      resetArrayBtn.addEventListener('click', () => {
+        updateArrayFromData([...this.initialArray]);
+      });
+    }
   }
 
   updateAlgorithmMetaUI(container) {
@@ -423,6 +517,21 @@ export class SortingPage {
           <span class="complexity-value" style="color: var(--secondary);">${algoMeta.complexities.space}</span>
         </div>
       `;
+
+      const optNote = compCard.querySelector('#optimization-note');
+      if (optNote) {
+        if (this.currentAlgoKey === 'bubbleSort') {
+          optNote.style.display = 'block';
+          optNote.innerHTML = `<strong style="color: var(--success);">Best Case O(n):</strong> Enabled by the early-exit flag. When the array is already sorted, zero swaps occur in Pass 1 and execution terminates immediately.`;
+        } else {
+          optNote.style.display = 'none';
+        }
+      }
+
+      const algoMetric = container.querySelector('#metric-algorithm');
+      if (algoMetric) {
+        algoMetric.textContent = algoMeta.name;
+      }
     }
   }
 
