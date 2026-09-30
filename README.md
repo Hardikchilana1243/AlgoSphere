@@ -42,8 +42,15 @@ Many computer science students and software engineering job candidates struggle 
   - Live 5-metric telemetry (Algorithm, Array Size, Step Progress, Comparisons, Swaps).
   - Synchronized pseudocode highlighting.
   - Theory card with $O(n)$ best-case early-exit optimization documentation.
-- [ ] **Day 2 — Selection & Insertion Sort Visualizers** (Upcoming)
-- [ ] **Day 3 — Divide-and-Conquer Sorting (Merge & Quick Sort)** (Upcoming)
+- [x] **Day 2 — Selection Sort Visualizer**:
+  - Pure event-driven Selection Sort step generator (`generateSelectionSortSteps`) adhering strictly to the shared step schema.
+  - Interactive visualization tracking the current boundary position, current minimum candidate (Amber), comparison elements (Violet), swaps (Pink), and sorted section (Green).
+  - Synchronized 9-line pseudocode highlighting matching algorithm execution steps.
+  - Accurate theoretical complexity cards displaying strict $O(n^2)$ best/average/worst runtime, $O(1)$ space, and instability notice.
+  - Full playback controls (Play, Pause, Step Next, Step Prev, Reset, Scrubber, Speed Slider, Keyboard shortcuts).
+  - Automated test suite with 79 assertions covering standard, sorted, reverse, duplicates, single-element, empty array, and engine integration.
+- [ ] **Insertion Sort Visualizer** (Upcoming)
+- [ ] **Divide-and-Conquer Sorting (Merge & Quick Sort)** (Upcoming)
 - [ ] **Day 4 — Searching Visualizers (Linear & Binary Search)** (Upcoming)
 - [ ] **Day 5+ — Practice Sets, CRUD Module & Advanced Features** (Upcoming)
 
@@ -77,7 +84,9 @@ AlgoSphere is styled as a modern developer tool with a focused, professional Saa
 - 3-step beginner onboarding guide and local learning progress tracking.
 
 ### 2. Sorting Visualizer
-- **Supported Algorithms**: Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, and Quick Sort.
+- **Algorithms Implemented**:
+  - **Bubble Sort**: Adjacent-element comparison and swap, largest value bubbles to end of unsorted section, $O(n)$ best-case early-exit optimization, stable.
+  - **Selection Sort**: Unsorted subarray linear scan to identify minimum element, minimum candidate tracking (Amber), comparisons (Violet), in-place swaps (Pink), sorted boundary (Green), strict $O(n^2)$ best/average/worst runtime, not stable in-place.
 - **Vertical Bar Visualization**: Dynamic height scaling, value badges, and index numbers.
 - **Full Playback Controls**: Play, Pause, Previous Step, Next Step, Reset, and arbitrary Step Scrubbing.
 - **Step Engine**: Snapshot-based architecture guaranteeing instant, bug-free backwards and forwards time travel without recalculation bugs.

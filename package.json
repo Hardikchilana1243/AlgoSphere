@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "serve .",
-    "dev": "serve ."
+    "dev": "serve .",
+    "test": "node tests/test-day1.js && node tests/test-selectionSort.js"
   },
   "devDependencies": {
     "serve": "^14.2.4"

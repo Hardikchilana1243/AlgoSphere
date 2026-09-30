@@ -44,20 +44,19 @@ export const ALGORITHM_METADATA = {
       average: 'O(n²)',
       worst: 'O(n²)',
       space: 'O(1)',
-      stability: 'Unstable',
+      stability: 'Not Stable in the standard in-place swap implementation',
       inPlace: 'Yes'
     },
     tags: ['Comparison', 'In-Place', 'Selection', 'Fixed Swaps'],
     pseudocode: [
       'function selectionSort(arr):',
       '  n = length(arr)',
-      '  for i from 0 to n - 1:',
-      '    minIdx = i',
+      '  for i from 0 to n - 2:',
+      '    minIndex = i',
       '    for j from i + 1 to n - 1:',
-      '      if arr[j] < arr[minIdx]:',
-      '        minIdx = j',
-      '    if minIdx != i:',
-      '      swap(arr[i], arr[minIdx])',
+      '      if arr[j] < arr[minIndex]:',
+      '        minIndex = j',
+      '    swap(arr[i], arr[minIndex])',
       '  return arr'
     ]
   },

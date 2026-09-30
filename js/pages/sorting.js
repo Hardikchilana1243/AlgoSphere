@@ -309,13 +309,17 @@ export class SortingPage {
                   </div>
                 </div>
 
-                <div style="margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-size: var(--text-xs); color: var(--muted);">
-                  <span>Stability: <strong style="color: var(--text);">${algoMeta.complexities.stability}</strong></span>
-                  <span>In-Place: <strong style="color: var(--text);">${algoMeta.complexities.inPlace}</strong></span>
+                <div id="complexity-properties-row" style="margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-size: var(--text-xs); color: var(--muted); flex-wrap: wrap; gap: var(--space-2);">
+                  <span>Stability: <strong id="complexity-stability" style="color: var(--text);">${algoMeta.complexities.stability}</strong></span>
+                  <span>In-Place: <strong id="complexity-inplace" style="color: var(--text);">${algoMeta.complexities.inPlace}</strong></span>
                 </div>
 
                 <div id="optimization-note" style="margin-top: var(--space-3); padding: var(--space-2) var(--space-3); background-color: var(--panel-elevated); border-radius: var(--radius-sm); font-size: var(--text-xs); color: var(--muted); line-height: 1.4;">
-                  <strong style="color: var(--success);">Best Case O(n):</strong> Enabled by the early-exit flag. When the array is already sorted, zero swaps occur in Pass 1 and execution terminates immediately.
+                  ${this.currentAlgoKey === 'bubbleSort' 
+                    ? '<strong style="color: var(--success);">Best Case O(n):</strong> Enabled by the early-exit flag. When the array is already sorted, zero swaps occur in Pass 1 and execution terminates immediately.'
+                    : this.currentAlgoKey === 'selectionSort'
+                      ? '<strong style="color: var(--warning);">Strict O(n²) Best Case:</strong> Selection Sort always performs n(n - 1)/2 comparisons regardless of initial array ordering, because it must scan the entire unsorted subarray to verify the true minimum.'
+                      : ''}
                 </div>
               </div>
             </div>
@@ -518,11 +522,20 @@ export class SortingPage {
         </div>
       `;
 
+      const stabilityEl = compCard.querySelector('#complexity-stability');
+      if (stabilityEl) stabilityEl.textContent = algoMeta.complexities.stability;
+
+      const inPlaceEl = compCard.querySelector('#complexity-inplace');
+      if (inPlaceEl) inPlaceEl.textContent = algoMeta.complexities.inPlace;
+
       const optNote = compCard.querySelector('#optimization-note');
       if (optNote) {
         if (this.currentAlgoKey === 'bubbleSort') {
           optNote.style.display = 'block';
           optNote.innerHTML = `<strong style="color: var(--success);">Best Case O(n):</strong> Enabled by the early-exit flag. When the array is already sorted, zero swaps occur in Pass 1 and execution terminates immediately.`;
+        } else if (this.currentAlgoKey === 'selectionSort') {
+          optNote.style.display = 'block';
+          optNote.innerHTML = `<strong style="color: var(--warning);">Strict O(n²) Best Case:</strong> Selection Sort always performs n(n - 1)/2 comparisons regardless of initial array ordering, because it must scan the entire unsorted subarray to verify the true minimum.`;
         } else {
           optNote.style.display = 'none';
         }

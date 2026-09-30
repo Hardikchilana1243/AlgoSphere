@@ -1,135 +1,192 @@
 /**
  * AlgoSphere - Selection Sort Algorithm
- * Generates an immutable event sequence with snapshots, minimum-index tracking, and step descriptions.
+ * Generates an immutable event sequence with snapshots, minimum-index tracking, operation counters, and pseudocode synchronization.
+ * Pure algorithm function with zero DOM dependencies.
  */
 
 export function generateSelectionSortSteps(inputArray) {
   const steps = [];
-  const arr = [...inputArray];
+  const arr = Array.isArray(inputArray) ? [...inputArray] : [];
   const n = arr.length;
   let comparisons = 0;
   let swaps = 0;
   const sortedIndices = new Set();
 
-  steps.push({
-    type: 'initial',
+  /**
+   * Helper to construct step snapshots with full metadata
+   * Includes both required specification fields and renderer compatibility fields.
+   */
+  const createStep = (config) => ({
+    type: config.type,
+    // Explicit properties matching assignment requirements
+    currentArray: [...arr],
+    comparedIndices: config.comparedIndices ? [...config.comparedIndices] : [],
+    currentIndices: config.currentIndices ? [...config.currentIndices] : [],
+    swappedIndices: config.swappedIndices ? [...config.swappedIndices] : [],
+    sortedIndices: Array.from(sortedIndices),
+    comparisonCount: comparisons,
+    swapCount: swaps,
+    explanation: config.description,
+    pseudocodeLine: config.codeLine,
+
+    // Backward-compatibility properties for existing renderer & engine
     array: [...arr],
-    indices: [],
-    highlights: {},
+    indices: config.comparedIndices || config.currentIndices || [],
+    highlights: config.highlights || {},
     counters: { comparisons, swaps },
-    codeLine: 1,
-    description: `Initialized Selection Sort with ${n} elements.`
+    codeLine: config.codeLine,
+    description: config.description
   });
 
+  // Step 0: Initial State
+  steps.push(createStep({
+    type: 'initial',
+    codeLine: 1,
+    description: `Initialized Selection Sort with ${n} elements. Ready to start.`,
+    highlights: mapHighlights(sortedIndices)
+  }));
+
+  // Handle empty array
+  if (n === 0) {
+    steps.push(createStep({
+      type: 'complete',
+      codeLine: 9,
+      description: 'Array is empty. Nothing to sort.',
+      highlights: {}
+    }));
+    return steps;
+  }
+
+  // Handle single-element array (trivially sorted)
+  if (n === 1) {
+    sortedIndices.add(0);
+    steps.push(createStep({
+      type: 'complete',
+      codeLine: 9,
+      sortedIndices: [0],
+      description: `Array of size 1 (${arr[0]}) is trivially sorted.`,
+      highlights: { 0: 'sorted' }
+    }));
+    return steps;
+  }
+
+  // Selection Sort: for each position i from 0 to n - 2
   for (let i = 0; i < n - 1; i++) {
     let minIdx = i;
 
-    steps.push({
+    // 1. Assume i is the minimum index & start pass
+    steps.push(createStep({
       type: 'iteration-start',
-      array: [...arr],
-      indices: [i],
+      codeLine: 4, // minIndex = i
+      currentIndices: [i],
+      description: `Starting pass ${i + 1} of ${n - 1} at position ${i}. Assuming current element arr[${i}] (${arr[i]}) is the minimum candidate.`,
       highlights: {
         ...mapHighlights(sortedIndices),
         [i]: 'current'
-      },
-      counters: { comparisons, swaps },
-      codeLine: 4,
-      description: `Starting pass for index ${i}. Initializing minimum element candidate to arr[${i}] (${arr[i]}).`
-    });
+      }
+    }));
 
+    // 2. Scan the remaining unsorted portion
     for (let j = i + 1; j < n; j++) {
       comparisons++;
-      const isNewMin = arr[j] < arr[minIdx];
+      const isSmaller = arr[j] < arr[minIdx];
+      const isEqual = arr[j] === arr[minIdx];
 
-      steps.push({
+      // 3. Compare current candidate with current minimum
+      steps.push(createStep({
         type: 'compare',
-        array: [...arr],
-        indices: [j, minIdx],
+        codeLine: 6, // if arr[j] < arr[minIndex]:
+        comparedIndices: [j, minIdx],
+        currentIndices: [minIdx],
+        description: isSmaller
+          ? `Comparing arr[${j}] (${arr[j]}) with current minimum arr[${minIdx}] (${arr[minIdx]}): ${arr[j]} < ${arr[minIdx]}, smaller element found!`
+          : isEqual
+            ? `Comparing arr[${j}] (${arr[j]}) with current minimum arr[${minIdx}] (${arr[minIdx]}): values are equal (${arr[j]}), keeping earlier minimum.`
+            : `Comparing arr[${j}] (${arr[j]}) with current minimum arr[${minIdx}] (${arr[minIdx]}): ${arr[j]} ≥ ${arr[minIdx]}, not smaller.`,
         highlights: {
           ...mapHighlights(sortedIndices),
           [minIdx]: 'current',
           [j]: 'comparing'
-        },
-        counters: { comparisons, swaps },
-        codeLine: 6,
-        description: `Comparing candidate arr[${j}] (${arr[j]}) against current min arr[${minIdx}] (${arr[minIdx]}). ${isNewMin ? `Found new smaller value (${arr[j]}).` : 'Not smaller.'}`
-      });
+        }
+      }));
 
-      if (isNewMin) {
+      // 4. Update minimum index when a smaller value is found
+      if (isSmaller) {
+        const prevMin = minIdx;
         minIdx = j;
-        steps.push({
+
+        steps.push(createStep({
           type: 'new-min',
-          array: [...arr],
-          indices: [minIdx],
+          codeLine: 7, // minIndex = j
+          currentIndices: [minIdx],
+          description: `Found a smaller element! Updating minimum candidate to index ${minIdx} (value: ${arr[minIdx]}, previously arr[${prevMin}] = ${arr[prevMin]}).`,
           highlights: {
             ...mapHighlights(sortedIndices),
-            [i]: 'comparing',
             [minIdx]: 'current'
-          },
-          counters: { comparisons, swaps },
-          codeLine: 7,
-          description: `Updated minimum index to ${minIdx} (value: ${arr[minIdx]}).`
-        });
+          }
+        }));
       }
     }
 
+    // 5. Swap the minimum element into position i
     if (minIdx !== i) {
       swaps++;
       const temp = arr[i];
       arr[i] = arr[minIdx];
       arr[minIdx] = temp;
 
-      steps.push({
+      steps.push(createStep({
         type: 'swap',
-        array: [...arr],
-        indices: [i, minIdx],
+        codeLine: 8, // swap(arr[i], arr[minIndex])
+        swappedIndices: [i, minIdx],
+        description: `Placing the minimum element into its final position: swapped arr[${i}] (${arr[i]}) with arr[${minIdx}] (${arr[minIdx]}).`,
         highlights: {
           ...mapHighlights(sortedIndices),
           [i]: 'moving',
           [minIdx]: 'moving'
-        },
-        counters: { comparisons, swaps },
-        codeLine: 9,
-        description: `Swapped minimum element ${arr[i]} into target position index ${i}.`
-      });
+        }
+      }));
     } else {
-      steps.push({
+      steps.push(createStep({
         type: 'no-swap',
-        array: [...arr],
-        indices: [i],
+        codeLine: 8, // swap(arr[i], arr[minIndex])
+        currentIndices: [i],
+        description: `Element arr[${i}] (${arr[i]}) is already the minimum for this pass. No swap needed.`,
         highlights: {
           ...mapHighlights(sortedIndices),
           [i]: 'current'
-        },
-        counters: { comparisons, swaps },
-        codeLine: 8,
-        description: `Element ${arr[i]} at index ${i} is already the minimum for this pass. No swap needed.`
-      });
+        }
+      }));
     }
 
+    // 6. Mark position i as sorted
     sortedIndices.add(i);
-    steps.push({
+    steps.push(createStep({
       type: 'mark-sorted',
-      array: [...arr],
-      indices: [i],
-      highlights: mapHighlights(sortedIndices),
-      counters: { comparisons, swaps },
-      codeLine: 4,
-      description: `Index ${i} (${arr[i]}) is now permanently sorted.`
-    });
+      codeLine: 3, // for i from 0 to n - 2:
+      currentIndices: [i],
+      description: `Position ${i} is now permanently sorted with value ${arr[i]}. Sorted boundary advances.`,
+      highlights: mapHighlights(sortedIndices)
+    }));
   }
 
-  for (let i = 0; i < n; i++) sortedIndices.add(i);
+  // The final remaining element at index n - 1 is naturally sorted
+  sortedIndices.add(n - 1);
+  steps.push(createStep({
+    type: 'mark-sorted',
+    codeLine: 9, // return arr
+    currentIndices: [n - 1],
+    description: `The last remaining element at index ${n - 1} (${arr[n - 1]}) is naturally in its sorted position.`,
+    highlights: mapHighlights(sortedIndices)
+  }));
 
-  steps.push({
+  // Complete state
+  steps.push(createStep({
     type: 'complete',
-    array: [...arr],
-    indices: [],
-    highlights: mapHighlights(sortedIndices),
-    counters: { comparisons, swaps },
-    codeLine: 10,
-    description: `Selection Sort complete! Sorted in ${comparisons} comparisons and ${swaps} swaps.`
-  });
+    codeLine: 9, // return arr
+    description: `Selection Sort complete! Array fully sorted in ${comparisons} comparisons and ${swaps} swaps.`,
+    highlights: mapHighlights(sortedIndices)
+  }));
 
   return steps;
 }
