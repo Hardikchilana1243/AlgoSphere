@@ -7,7 +7,7 @@
   "scripts": {
     "start": "serve .",
     "dev": "serve .",
-    "test": "node tests/test-day1.js && node tests/test-selectionSort.js"
+    "test": "node tests/test-day1.js && node tests/test-selectionSort.js && node tests/test-insertionSort.js"
   },
   "devDependencies": {
     "serve": "^14.2.4"
