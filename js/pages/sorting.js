@@ -319,7 +319,11 @@ export class SortingPage {
                     ? '<strong style="color: var(--success);">Best Case O(n):</strong> Enabled by the early-exit flag. When the array is already sorted, zero swaps occur in Pass 1 and execution terminates immediately.'
                     : this.currentAlgoKey === 'selectionSort'
                       ? '<strong style="color: var(--warning);">Strict O(n²) Best Case:</strong> Selection Sort always performs n(n - 1)/2 comparisons regardless of initial array ordering, because it must scan the entire unsorted subarray to verify the true minimum.'
-                      : ''}
+                      : this.currentAlgoKey === 'insertionSort'
+                        ? '<strong style="color: var(--success);">Adaptive O(n) Best Case:</strong> When array is already sorted, each key only compares once with its predecessor and requires zero shifts.'
+                        : this.currentAlgoKey === 'mergeSort'
+                          ? '<strong style="color: var(--secondary);">Guaranteed O(n log n):</strong> Recursively splits array into halves in log(n) depth and performs linear O(n) merge work at each level. Stable sorting with O(n) auxiliary space.'
+                          : ''}
                 </div>
               </div>
             </div>
@@ -536,6 +540,12 @@ export class SortingPage {
         } else if (this.currentAlgoKey === 'selectionSort') {
           optNote.style.display = 'block';
           optNote.innerHTML = `<strong style="color: var(--warning);">Strict O(n²) Best Case:</strong> Selection Sort always performs n(n - 1)/2 comparisons regardless of initial array ordering, because it must scan the entire unsorted subarray to verify the true minimum.`;
+        } else if (this.currentAlgoKey === 'insertionSort') {
+          optNote.style.display = 'block';
+          optNote.innerHTML = `<strong style="color: var(--success);">Adaptive O(n) Best Case:</strong> When array is already sorted, each key only compares once with its predecessor and requires zero shifts.`;
+        } else if (this.currentAlgoKey === 'mergeSort') {
+          optNote.style.display = 'block';
+          optNote.innerHTML = `<strong style="color: var(--secondary);">Guaranteed O(n log n):</strong> Recursively splits array into halves in log(n) depth and performs linear O(n) merge work at each level. Stable sorting with O(n) auxiliary space.`;
         } else {
           optNote.style.display = 'none';
         }

@@ -115,7 +115,8 @@ export const ALGORITHM_METADATA = {
       '',
       'function merge(arr, left, mid, right):',
       '  compare elements from left & right halves',
-      '  overwrite arr[k] with smaller element'
+      '  overwrite arr[k] with smaller element',
+      '  copy remaining elements into arr'
     ]
   },
 
