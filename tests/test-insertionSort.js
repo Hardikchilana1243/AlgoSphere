@@ -8,6 +8,7 @@ import { generateSelectionSortSteps } from '../js/algorithms/sorting/selectionSo
 import { ALGORITHM_METADATA } from '../js/data/algorithmMetadata.js';
 import { StepEngine } from '../js/visualizer/stepEngine.js';
 import { AnimationController } from '../js/visualizer/animationController.js';
+import { Validation } from '../js/utils/validation.js';
 
 console.log('--- RUNNING INSERTION SORT AUTOMATED VERIFICATION ---');
 
@@ -161,7 +162,7 @@ console.log('\nTest Case 6: Empty Input []');
 }
 
 // 7. StepEngine & Time-Travel Integration
-console.log('\nTest Case 7: StepEngine & Time-Travel Stepping');
+console.log('\nTest Case 7: StepEngine & AnimationController Integration');
 {
     const engine = new StepEngine();
     const input = [5, 3, 8, 1, 2];
@@ -180,16 +181,47 @@ console.log('\nTest Case 7: StepEngine & Time-Travel Stepping');
 
     engine.prev();
     assert(engine.getStepIndex() === 0, 'Engine stepped backward to step 0');
+    assert(JSON.stringify(engine.getCurrentStep().array) === JSON.stringify(steps[0].array), 'Step 0 array snapshot accurately restored');
 
     engine.jumpTo(5);
     assert(engine.getStepIndex() === 5, 'Engine jumped directly to step 5');
 
     engine.reset();
     assert(engine.getStepIndex() === 0, 'Engine reset returns to step 0');
+
+    engine.jumpTo(steps.length - 1);
+    assert(engine.isComplete() === true, 'Engine detects completion state at final step');
+
+    // AnimationController playback controls & dynamic speed
+    const anim = new AnimationController(engine, { speedMs: 300 });
+    assert(anim.isPlaying === false, 'AnimationController initially paused');
+    anim.setSpeed(120);
+    assert(anim.speedMs === 120, 'AnimationController dynamic speed updated');
 }
 
-// 8. Metadata and Pseudocode Verification
-console.log('\nTest Case 8: Metadata & Pseudocode Verification');
+// 8. Validation Handling
+console.log('\nTest Case 8: Input Validation Handling');
+{
+    const resEmpty = Validation.parseArrayInput('');
+    const resWhitespace = Validation.parseArrayInput('   ');
+    const resNull = Validation.parseArrayInput(null);
+    const resNonNumeric = Validation.parseArrayInput('5, foo, 8');
+    const resDecimal = Validation.parseArrayInput('5, 3.14, 8');
+    const resOutOfRange = Validation.parseArrayInput('5, 120, 8');
+    const resValidSingle = Validation.parseArrayInput('7', 1, 25);
+
+    assert(!resEmpty.isValid, 'Empty string rejected');
+    assert(!resWhitespace.isValid, 'Whitespace rejected');
+    assert(!resNull.isValid, 'Null input rejected');
+    assert(!resNonNumeric.isValid, 'Non-numeric string rejected');
+    assert(!resDecimal.isValid, 'Decimal number rejected');
+    assert(!resOutOfRange.isValid, 'Out of range number rejected');
+    assert(resValidSingle.isValid, 'Single-element "7" accepted');
+    assert(JSON.stringify(resValidSingle.data) === JSON.stringify([7]), 'Parsed single element as [7]');
+}
+
+// 9. Metadata and Pseudocode Verification
+console.log('\nTest Case 9: Metadata & Pseudocode Verification');
 {
     const meta = ALGORITHM_METADATA.insertionSort;
     assert(meta !== undefined, 'Insertion Sort metadata exists in ALGORITHM_METADATA');
@@ -204,8 +236,8 @@ console.log('\nTest Case 8: Metadata & Pseudocode Verification');
     assert(meta.pseudocode.length === 10, `Pseudocode has 10 lines: got ${meta.pseudocode.length}`);
 }
 
-// 9. Regression Safety for Bubble Sort & Selection Sort
-console.log('\nTest Case 9: Regression Safety');
+// 10. Regression Safety for Bubble Sort & Selection Sort
+console.log('\nTest Case 10: Regression Safety');
 {
     const bSteps = generateBubbleSortSteps([5, 3, 8, 1, 2]);
     const sSteps = generateSelectionSortSteps([5, 3, 8, 1, 2]);
