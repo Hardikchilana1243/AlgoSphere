@@ -61,7 +61,12 @@ Many computer science students and software engineering job candidates struggle 
   - Synchronized 11-line pseudocode highlighting matching split, recursion, compare, overwrite, and remaining copy phases.
   - Guaranteed $O(n \log n)$ asymptotic runtime across best, average, and worst cases with $O(n)$ auxiliary space and stable ordering.
   - Comprehensive automated test suite with 77 assertions covering edge cases, stability, arbitrary random arrays, time-travel, and engine integration.
-- [ ] **Quick Sort Visualizer** (Upcoming)
+- [x] **Day 5 — Quick Sort Visualizer**:
+  - Pure event-driven Quick Sort step generator (`generateQuickSortSteps`) with deterministic Lomuto partition scheme and in-place swapping.
+  - Interactive visualization highlighting pivot selection (Amber), partition scanning comparisons (Violet), boundary adjustments and element swaps (Pink), and finalized pivot/single-element sorted states (Green).
+  - Synchronized 13-line pseudocode highlighting corresponding to function recursion, pivot selection, comparison passes, and pivot placement.
+  - Accurate theoretical complexity cards displaying $O(n \log n)$ best/average runtime, $O(n^2)$ worst-case on unbalanced partitions, $O(\log n)$ recursive call stack auxiliary space, in-place categorization, and standard instability explanation.
+  - Comprehensive automated test suite with 105+ assertions covering standard, already-sorted (0 swaps), reverse-sorted, duplicate-heavy, equal-value arrays, edge cases, time-travel engine, and algorithm switching.
 - [ ] **Searching Visualizers (Linear & Binary Search)** (Upcoming)
 - [ ] **Practice Sets, CRUD Module & Advanced Features** (Upcoming)
 
@@ -100,6 +105,7 @@ AlgoSphere is styled as a modern developer tool with a focused, professional Saa
   - **Selection Sort**: Unsorted subarray linear scan to identify minimum element, minimum candidate tracking (Amber), comparisons (Violet), in-place swaps (Pink), sorted boundary (Green), strict $O(n^2)$ best/average/worst runtime, not stable in-place.
   - **Insertion Sort**: Incremental sorted subarray construction, current key tracking (Amber), comparisons against sorted prefix (Violet), rightward shifts (Pink), in-place insertion, adaptive $O(n)$ best-case runtime on sorted data, $O(n^2)$ worst-case, $O(1)$ space, stable.
   - **Merge Sort**: Divide-and-conquer splitting down to single-element subarrays, linear-time two-way merging, comparison of front elements (Violet), in-place overwrites (Pink), guaranteed $O(n \log n)$ best/average/worst runtime, $O(n)$ auxiliary space, stable.
+  - **Quick Sort**: Partition-based divide-and-conquer using deterministic Lomuto partitioning, pivot selection (Amber), comparisons (Violet), in-place swaps (Pink), finalized pivot placement (Green), $O(n \log n)$ average runtime, $O(n^2)$ worst-case, $O(\log n)$ stack space, in-place, not stable.
 - **Vertical Bar Visualization**: Dynamic height scaling, value badges, and index numbers.
 - **Full Playback Controls**: Play, Pause, Previous Step, Next Step, Reset, and arbitrary Step Scrubbing.
 - **Step Engine**: Snapshot-based architecture guaranteeing instant, bug-free backwards and forwards time travel without recalculation bugs.

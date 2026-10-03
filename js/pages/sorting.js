@@ -323,7 +323,9 @@ export class SortingPage {
                         ? '<strong style="color: var(--success);">Adaptive O(n) Best Case:</strong> When array is already sorted, each key only compares once with its predecessor and requires zero shifts.'
                         : this.currentAlgoKey === 'mergeSort'
                           ? '<strong style="color: var(--secondary);">Guaranteed O(n log n):</strong> Recursively splits array into halves in log(n) depth and performs linear O(n) merge work at each level. Stable sorting with O(n) auxiliary space.'
-                          : ''}
+                          : this.currentAlgoKey === 'quickSort'
+                            ? '<strong style="color: var(--primary-hover);">Average O(n log n) / Worst O(n²):</strong> Partitions elements around a pivot. Best/average runtime is O(n log n) with balanced partitions and O(log n) call stack space. Worst case O(n²) occurs when extreme pivots create unbalanced partitions of size n - 1 (requiring O(n) call stack space). In-place, not stable.'
+                            : ''}
                 </div>
               </div>
             </div>
@@ -546,6 +548,9 @@ export class SortingPage {
         } else if (this.currentAlgoKey === 'mergeSort') {
           optNote.style.display = 'block';
           optNote.innerHTML = `<strong style="color: var(--secondary);">Guaranteed O(n log n):</strong> Recursively splits array into halves in log(n) depth and performs linear O(n) merge work at each level. Stable sorting with O(n) auxiliary space.`;
+        } else if (this.currentAlgoKey === 'quickSort') {
+          optNote.style.display = 'block';
+          optNote.innerHTML = `<strong style="color: var(--primary-hover);">Average O(n log n) / Worst O(n²):</strong> Partitions elements around a pivot. Best/average runtime is O(n log n) with balanced partitions and O(log n) call stack space. Worst case O(n²) occurs when extreme pivots create unbalanced partitions of size n - 1 (requiring O(n) call stack space). In-place, not stable.`;
         } else {
           optNote.style.display = 'none';
         }
