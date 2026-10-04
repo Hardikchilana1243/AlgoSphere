@@ -67,8 +67,16 @@ Many computer science students and software engineering job candidates struggle 
   - Synchronized 13-line pseudocode highlighting corresponding to function recursion, pivot selection, comparison passes, and pivot placement.
   - Accurate theoretical complexity cards displaying $O(n \log n)$ best/average runtime, $O(n^2)$ worst-case on unbalanced partitions, $O(\log n)$ recursive call stack auxiliary space, in-place categorization, and standard instability explanation.
   - Comprehensive automated test suite with 105+ assertions covering standard, already-sorted (0 swaps), reverse-sorted, duplicate-heavy, equal-value arrays, edge cases, time-travel engine, and algorithm switching.
-- [ ] **Searching Visualizers (Linear & Binary Search)** (Upcoming)
-- [ ] **Practice Sets, CRUD Module & Advanced Features** (Upcoming)
+- [x] **Day 6 — Searching Visualizers**:
+  - Linear Search ($O(n)$) sequential inspection with instant found/missing alerts.
+  - Binary Search ($O(\log n)$) logarithmic divide-and-conquer with Low, Mid, High pointer tracking.
+  - Unsorted array detection and 1-click in-place sorting helper.
+- [x] **Day 7 — Practice Sets (CRUD & Web Storage)**:
+  - Complete Create, Read, Update, Delete (CRUD) operations backed by browser `localStorage`.
+  - Storage key `algosphere_practice_sets` with safe JSON parsing and corruption recovery.
+  - Direct integration with Sorting and Searching visualizers via "Visualize" action.
+  - Real-time search by name, algorithm category filter, and modal-based dialogs.
+  - Automated test suite with 73 assertions covering all CRUD operations, unique IDs, and edge cases.
 
 ---
 
@@ -98,6 +106,16 @@ AlgoSphere is styled as a modern developer tool with a focused, professional Saa
 - Key telemetry metrics (7 algorithms, 100% deterministic stepping, line-by-line code tracking).
 - Filterable Algorithm Catalog (`All`, `Sorting`, `Searching`) with complexity tags and direct launcher links.
 - 3-step beginner onboarding guide and local learning progress tracking.
+
+### 2. Practice Sets Studio (CRUD Operations + Web Storage)
+- Full **CRUD** workflow for custom algorithm practice arrays.
+- Persistent client storage using browser **`localStorage`** (`algosphere_practice_sets`).
+- **Create**: Add custom named arrays with algorithm targeting and input validation.
+- **Read**: View saved arrays formatted as monospace chips with item counts and timestamps.
+- **Update**: Edit existing practice sets in-place while preserving IDs and creation dates.
+- **Delete**: Remove sets with explicit confirmation modal protection.
+- **Visualize**: 1-click bridge loading any saved practice set directly into the corresponding visualizer.
+- Real-time search and filter controls.
 
 ### 2. Sorting Visualizer
 - **Algorithms Implemented**:
@@ -175,6 +193,7 @@ algosphere/
 │   │   ├── dashboard.js         # Dashboard page controller
 │   │   ├── sorting.js           # Sorting visualizer controller
 │   │   ├── searching.js         # Searching visualizer controller
+│   │   ├── practiceSets.js      # Practice sets CRUD & localStorage controller
 │   │   ├── learn.js             # Learn studio page controller
 │   │   └── settings.js          # Settings page controller
 │   ├── algorithms/
@@ -193,12 +212,90 @@ algosphere/
 │   │   ├── animationController.js # Timer coordination and race-condition prevention
 │   │   └── controls.js          # UI button bindings and keyboard shortcuts
 │   └── utils/
-│       ├── validation.js        # Array string parsing and bounds checking
+│       ├── validation.js        # Array string parsing, bounds & CRUD checking
 │       ├── arrayUtils.js        # Dataset generators and sorted checker
-│       └── storage.js           # Safe localStorage persistence wrapper
+│       └── storage.js           # Safe localStorage persistence & CRUD layer
 └── tests/
-    └── manual-test-checklist.md # Structured verification protocol
+    ├── manual-test-checklist.md # Structured verification protocol
+    ├── test-day1.js             # Bubble sort automated verification
+    ├── test-selectionSort.js    # Selection sort automated verification
+    ├── test-insertionSort.js    # Insertion sort automated verification
+    ├── test-mergeSort.js        # Merge sort automated verification
+    ├── test-quickSort.js        # Quick sort automated verification
+    └── test-practiceSets.js     # Practice sets CRUD & storage verification
 ```
+
+---
+
+# CRUD Operations
+
+AlgoSphere implements full **CRUD (Create, Read, Update, Delete)** operations on saved algorithm practice sets, fulfilling the mandatory Web Storage and data management requirement for the Web Fundamentals curriculum.
+
+### Create
+Users can create saved practice sets:
+- Click **"New Practice Set"** from the Practice Sets workspace or Dashboard hero.
+- Enter a unique, human-readable dataset name (e.g., `"My Sorting Test"`, `"Binary Search Edge Cases"`).
+- Select a target algorithm from any of the 7 supported sorting or searching algorithms.
+- Provide a custom comma-separated integer array (1–25 elements, values 1–100) or choose from quick presets (`5, 3, 8, 1, 2`, `10, 25, 42, 68, 90`, or `Random 7`).
+- Form validation verifies name uniqueness, character length, element counts, integer validity, and bounds.
+- Upon submission, the practice set is assigned a collision-free unique identifier, stamped with ISO timestamps (`createdAt`, `updatedAt`), persisted to browser storage, and immediately rendered at the top of the dataset grid with feedback.
+
+### Read
+Saved practice sets are loaded from `localStorage`:
+- When navigating to the Practice Sets workspace (`#/practice`), all saved datasets are read and parsed from client storage.
+- Each practice set is presented in a card displaying:
+  - Dataset name
+  - Target algorithm badge (e.g. `Bubble Sort` or `Binary Search`)
+  - Array preview formatted as monospace value chips
+  - Total item count and last updated timestamp
+  - Direct action triggers: **Visualize**, **Edit**, and **Delete**
+- **Search & Filter**: Users can filter practice sets in real-time by dataset name and target algorithm category.
+- **Empty State**: When no practice sets exist, a polished empty state banner explains the feature and provides an immediate creation button.
+- **Corruption Resilience**: If storage data is missing or corrupted, the system catches the syntax error gracefully and recovers with an empty state rather than crashing.
+
+### Update
+Users can edit saved practice sets:
+- Clicking the **"Edit"** button on any practice set opens the modal dialog preloaded with existing values (name, algorithm, array).
+- Validation executes upon submission to ensure updated data remains strictly compliant.
+- The update operation modifies **only** the selected practice set in `localStorage`:
+  - The record's unique `id` and initial `createdAt` timestamp are strictly preserved.
+  - The `updatedAt` timestamp is updated to the current time.
+  - Unrelated practice sets are completely unmutated.
+- The UI refreshes immediately without requiring a full page reload.
+
+### Delete
+Users can remove saved practice sets:
+- Clicking the **"Delete"** button on any card opens a confirmation dialog clearly naming the targeted dataset to prevent accidental deletion.
+- Upon confirmation, only that specific record is removed from `localStorage`.
+- Immediate UI synchronization updates the grid and displays a confirmation toast.
+- Deleting the last remaining practice set returns the view to the empty state cleanly.
+
+---
+
+### Web Storage
+
+AlgoSphere uses browser **`localStorage`** because the application is built intentionally as a frontend-only, client-side web application. It does not require a backend server, database (such as MongoDB or Firebase), or external API keys.
+
+Using native Web Storage ensures:
+- **Zero latency**: Data operations execute synchronously on the client.
+- **Offline availability**: The studio operates completely offline without internet connectivity.
+- **Data hygiene**: No passwords, API keys, or sensitive personal data are ever stored.
+
+**Primary LocalStorage Key**:
+```
+algosphere_practice_sets
+```
+
+All practice set records are serialized and parsed using centralized, fault-tolerant utilities in [js/utils/storage.js](file:///c:/Users/pc/Desktop/Frontend%20Project/js/utils/storage.js).
+
+---
+
+### Visualize Integration
+The **"Visualize"** button bridges Practice Sets with AlgoSphere's visualizer studios:
+- Clicking **Visualize** inspects the dataset's selected algorithm.
+- If the algorithm is a sorting algorithm (Bubble, Selection, Insertion, Merge, Quick Sort), AlgoSphere routes to `#/sorting` with the selected algorithm and practice array loaded into the bar visualizer.
+- If the algorithm is a searching algorithm (Linear or Binary Search), AlgoSphere routes to `#/searching` with the algorithm, custom array, and search target loaded into the pointer visualizer.
+- The step engine immediately builds deterministic execution steps, allowing learners to click Play or step forwards/backwards instantly.
 
 ---
 

@@ -26,6 +26,25 @@ export class SearchingPage {
   }
 
   render(container, params = {}) {
+    if (params.id) {
+      const practiceSet = Storage.getPracticeSetById(params.id);
+      if (practiceSet && Array.isArray(practiceSet.array) && practiceSet.array.length > 0) {
+        this.currentArray = [...practiceSet.array];
+        if (practiceSet.algorithm === 'binarySearch' || practiceSet.algorithm === 'linearSearch') {
+          this.currentAlgoKey = practiceSet.algorithm;
+        }
+        const midIdx = Math.floor(this.currentArray.length / 2);
+        this.currentTarget = this.currentArray[midIdx] !== undefined ? this.currentArray[midIdx] : 42;
+      }
+    } else if (params.array) {
+      const parsed = Validation.parseArrayInput(params.array);
+      if (parsed.isValid && parsed.data.length > 0) {
+        this.currentArray = parsed.data;
+        const midIdx = Math.floor(this.currentArray.length / 2);
+        this.currentTarget = this.currentArray[midIdx] !== undefined ? this.currentArray[midIdx] : 42;
+      }
+    }
+
     if (params.algo === 'binarySearch' || params.algo === 'linearSearch') {
       this.currentAlgoKey = params.algo;
     }

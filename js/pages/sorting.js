@@ -42,6 +42,23 @@ export class SortingPage {
   }
 
   render(container, params = {}) {
+    if (params.id) {
+      const practiceSet = Storage.getPracticeSetById(params.id);
+      if (practiceSet && Array.isArray(practiceSet.array) && practiceSet.array.length > 0) {
+        this.currentArray = [...practiceSet.array];
+        this.initialArray = [...practiceSet.array];
+        if (practiceSet.algorithm && SORTING_GENERATORS[practiceSet.algorithm]) {
+          this.currentAlgoKey = practiceSet.algorithm;
+        }
+      }
+    } else if (params.array) {
+      const parsed = Validation.parseArrayInput(params.array);
+      if (parsed.isValid && parsed.data.length > 0) {
+        this.currentArray = parsed.data;
+        this.initialArray = [...parsed.data];
+      }
+    }
+
     if (params.algo && SORTING_GENERATORS[params.algo]) {
       this.currentAlgoKey = params.algo;
     }

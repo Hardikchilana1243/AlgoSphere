@@ -7,6 +7,7 @@ import { State } from './state.js';
 import { renderDashboard } from './pages/dashboard.js';
 import { SortingPage } from './pages/sorting.js';
 import { SearchingPage } from './pages/searching.js';
+import { PracticeSetsPage } from './pages/practiceSets.js';
 import { renderLearn } from './pages/learn.js';
 import { renderSettings } from './pages/settings.js';
 
@@ -75,6 +76,12 @@ export class Router {
 
       case 'searching':
         this.activePageInstance = new SearchingPage();
+        this.activePageInstance.render(this.contentContainer, params);
+        break;
+
+      case 'practice':
+      case 'practice-sets':
+        this.activePageInstance = new PracticeSetsPage();
         this.activePageInstance.render(this.contentContainer, params);
         break;
 

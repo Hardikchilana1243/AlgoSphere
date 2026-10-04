@@ -112,5 +112,110 @@ export const Validation = {
     }
 
     return { isValid: true, value: intVal };
+  },
+
+  /**
+   * Validates a practice set name
+   * @param {string} name
+   * @param {Array} existingSets
+   * @param {string|null} currentId
+   * @returns {{ isValid: boolean, error?: string, value?: string }}
+   */
+  validatePracticeSetName(name, existingSets = [], currentId = null) {
+    if (!name || typeof name !== 'string' || !name.trim()) {
+      return { isValid: false, error: 'Practice set name cannot be empty.' };
+    }
+
+    const trimmed = name.trim();
+    if (trimmed.length < 2) {
+      return { isValid: false, error: 'Practice set name must be at least 2 characters long.' };
+    }
+
+    if (trimmed.length > 50) {
+      return { isValid: false, error: 'Practice set name cannot exceed 50 characters.' };
+    }
+
+    // Check duplicate name (case-insensitive), excluding current record in case of edit
+    const isDuplicate = existingSets.some(set => {
+      if (!set || (currentId && set.id === currentId)) return false;
+      return typeof set.name === 'string' && set.name.trim().toLowerCase() === trimmed.toLowerCase();
+    });
+
+    if (isDuplicate) {
+      return {
+        isValid: false,
+        error: `A practice set with the name "${trimmed}" already exists. Please choose a unique name.`
+      };
+    }
+
+    return { isValid: true, value: trimmed };
+  },
+
+  /**
+   * Validates algorithm selection
+   * @param {string} algorithm
+   * @returns {{ isValid: boolean, error?: string, value?: string }}
+   */
+  validatePracticeSetAlgorithm(algorithm) {
+    const validAlgos = [
+      'bubbleSort',
+      'selectionSort',
+      'insertionSort',
+      'mergeSort',
+      'quickSort',
+      'linearSearch',
+      'binarySearch'
+    ];
+
+    if (!algorithm || !validAlgos.includes(algorithm)) {
+      return { isValid: false, error: 'Please select a valid algorithm.' };
+    }
+
+    return { isValid: true, value: algorithm };
+  },
+
+  /**
+   * Comprehensive validation for a practice set payload
+   * @param {{ name: string, algorithm: string, array: string|number[] }} data
+   * @param {Array} existingSets
+   * @param {string|null} currentId
+   * @returns {{ isValid: boolean, error?: string, data?: { name: string, algorithm: string, array: number[] } }}
+   */
+  validatePracticeSet(data, existingSets = [], currentId = null) {
+    if (!data || typeof data !== 'object') {
+      return { isValid: false, error: 'Invalid practice set data format.' };
+    }
+
+    const nameValidation = this.validatePracticeSetName(data.name, existingSets, currentId);
+    if (!nameValidation.isValid) {
+      return { isValid: false, error: nameValidation.error };
+    }
+
+    const algoValidation = this.validatePracticeSetAlgorithm(data.algorithm);
+    if (!algoValidation.isValid) {
+      return { isValid: false, error: algoValidation.error };
+    }
+
+    let parsedArray;
+    if (typeof data.array === 'string') {
+      parsedArray = this.parseArrayInput(data.array, 1, 25, 1, 100);
+    } else if (Array.isArray(data.array)) {
+      parsedArray = this.parseArrayInput(data.array.join(','), 1, 25, 1, 100);
+    } else {
+      return { isValid: false, error: 'Please provide a valid array of numbers.' };
+    }
+
+    if (!parsedArray.isValid) {
+      return { isValid: false, error: parsedArray.error };
+    }
+
+    return {
+      isValid: true,
+      data: {
+        name: nameValidation.value,
+        algorithm: algoValidation.value,
+        array: parsedArray.data
+      }
+    };
   }
 };

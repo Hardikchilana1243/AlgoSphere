@@ -7,6 +7,8 @@ const ROUTE_NAMES = {
   dashboard: 'Dashboard',
   sorting: 'Sorting Visualizer',
   searching: 'Searching Visualizer',
+  practice: 'Practice Sets',
+  'practice-sets': 'Practice Sets',
   learn: 'Learn Studio',
   settings: 'Studio Settings'
 };

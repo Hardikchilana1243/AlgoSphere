@@ -96,16 +96,49 @@ Use this checklist to perform end-to-end quality assurance before presenting Alg
 
 ---
 
-## 6. Studio Settings
-- [ ] **Color Tokens**: Swatch cards render all 13 starting CSS variables with hex values.
-- [ ] **Speed Selector**: Clicking Slow / Normal / Fast updates default speed and shows toast.
-- [ ] **Reduced Motion**: Toggling checkbox enables/disables animations and applies `.reduce-motion` class.
-- [ ] **Reset Preferences**: Resets localStorage and triggers confirmation toast.
+## 6. Practice Sets (CRUD & Web Storage)
+- [ ] **Empty State**:
+  - [ ] Opening Practice Sets with empty storage displays polished empty state card and "Create Your First Practice Set" CTA button.
+- [ ] **CREATE Operation**:
+  - [ ] Clicking **New Practice Set** opens accessible modal with focused name input.
+  - [ ] Quick fill presets (`5, 3, 8, 1, 2`, `10, 25, 42, 68, 90`, `Random 7`) populate the array input correctly.
+  - [ ] Array item counter dynamically updates as user enters comma-separated numbers.
+  - [ ] Validation prevents submitting empty name, short name (<2 chars), duplicate names, empty array, or non-numeric tokens with red inline error alerts.
+  - [ ] Submitting valid data saves record, closes modal, displays success toast, and immediately shows new card at top of grid.
+- [ ] **READ Operation**:
+  - [ ] Saved practice sets load persistently from `algosphere_practice_sets` in `localStorage`.
+  - [ ] Card header displays set name, algorithm name badge, and item count.
+  - [ ] Array preview renders values as styled monospace chips that wrap gracefully without horizontal overflow.
+  - [ ] Search bar filters cards in real-time as user types.
+  - [ ] Algorithm dropdown filters cards by category/algorithm.
+- [ ] **UPDATE Operation**:
+  - [ ] Clicking **Edit** opens modal pre-filled with the existing record's name, algorithm, and array.
+  - [ ] Editing values and saving updates only that record while preserving its unique ID and original creation timestamp.
+  - [ ] Toast notification confirms successful update.
+- [ ] **DELETE Operation**:
+  - [ ] Clicking **Delete** opens a confirmation dialog stating the exact name of the practice set.
+  - [ ] Clicking Cancel dismisses dialog without deleting.
+  - [ ] Clicking **Confirm Delete** removes only that specific item, updates `localStorage`, and triggers confirmation toast.
+  - [ ] Deleting the last remaining set gracefully returns the UI to the empty state.
+- [ ] **VISUALIZE Operation**:
+  - [ ] Clicking **Visualize** on a Sorting set (e.g. Bubble Sort) navigates to `#/sorting` with the selected algorithm and custom array pre-loaded.
+  - [ ] Clicking **Visualize** on a Searching set (e.g. Binary Search) navigates to `#/searching` with the algorithm, array, and target pre-loaded.
+- [ ] **Data Persistence & Hygiene**:
+  - [ ] Refreshing the browser preserves all created/updated practice sets.
+  - [ ] No passwords, API keys, or sensitive data are stored in `localStorage`.
 
 ---
 
-## 7. Responsive & Cross-Browser Integrity
-- [ ] **Desktop ($>1200\text{px}$)**: Persistent 240px sidebar, 2-column visualizer layout.
-- [ ] **Tablet ($768\text{px} - 1024\text{px}$)**: Single column visualizer workspace, compact sidebar.
-- [ ] **Mobile ($<768\text{px}$)**: Collapsed drawer navigation, controls stack vertically, no horizontal page overflow.
+## 7. Studio Settings
+- [ ] **Color Tokens**: Swatch cards render all 13 starting CSS variables with hex values.
+- [ ] **Speed Selector**: Clicking Slow / Normal / Fast updates default speed and shows toast.
+- [ ] **Reduced Motion**: Toggling checkbox enables/disables animations and applies `.reduce-motion` class.
+- [ ] **Reset Preferences / Clear Data**: Resets localStorage and triggers confirmation toast.
+
+---
+
+## 8. Responsive & Cross-Browser Integrity
+- [ ] **Desktop ($>1200\text{px}$)**: Persistent 240px sidebar, 2-column visualizer layout, multi-column practice sets grid.
+- [ ] **Tablet ($768\text{px} - 1024\text{px}$)**: Single column visualizer workspace, compact sidebar, 2-column practice sets grid.
+- [ ] **Mobile ($<768\text{px}$)**: Collapsed drawer navigation, controls stack vertically, modal fits screen comfortably with scrollable body, no horizontal page overflow.
 - [ ] **Console**: Browser DevTools console is 100% free of JavaScript errors or missing module warnings.
