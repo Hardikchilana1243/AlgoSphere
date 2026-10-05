@@ -24,12 +24,12 @@ export function renderLearn(container) {
       </div>
 
       <!-- Quick Jump Navigation Pills -->
-      <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
-        <a href="#section-sorting-theory" class="btn btn-secondary btn-sm">Sorting Theory</a>
-        <a href="#section-searching-theory" class="btn btn-secondary btn-sm">Searching Theory</a>
-        <a href="#section-big-o" class="btn btn-secondary btn-sm">Big-O Reference</a>
-        <a href="#section-glossary" class="btn btn-secondary btn-sm">CS Glossary</a>
-        <a href="#section-algo-matrix" class="btn btn-secondary btn-sm">Algorithm Cheat Sheet</a>
+      <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;" id="learn-quick-jumps">
+        <button type="button" class="btn btn-secondary btn-sm" data-target="section-sorting-theory">Sorting Theory</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-target="section-searching-theory">Searching Theory</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-target="section-big-o">Big-O Reference</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-target="section-glossary">CS Glossary</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-target="section-algo-matrix">Algorithm Cheat Sheet</button>
       </div>
 
       <!-- Sorting Fundamentals -->
@@ -185,4 +185,17 @@ export function renderLearn(container) {
       </section>
     </div>
   `;
+
+  const jumpContainer = container.querySelector('#learn-quick-jumps');
+  if (jumpContainer) {
+    jumpContainer.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-target]');
+      if (!btn) return;
+      const targetId = btn.getAttribute('data-target');
+      const targetEl = container.querySelector(`#${targetId}`);
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
 }

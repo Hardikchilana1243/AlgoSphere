@@ -96,7 +96,7 @@ export class SortingPage {
         <!-- Input & Dataset Controls Toolbar -->
         <div class="panel" style="padding: var(--space-4);">
           <div style="display: flex; flex-direction: column; gap: var(--space-3);">
-            <div style="display: grid; grid-template-columns: 1fr auto; gap: var(--space-3); align-items: flex-end;">
+            <div class="visualizer-toolbar-grid" style="display: grid; grid-template-columns: 1fr auto; gap: var(--space-3); align-items: flex-end;">
               <div class="form-group" style="margin-bottom: 0;">
                 <label for="array-input" class="form-label">
                   <span>Custom Array (Comma-separated integers 1–100, 1–25 items)</span>
@@ -110,8 +110,9 @@ export class SortingPage {
                     value="${this.currentArray.join(', ')}" 
                     placeholder="e.g. 5, 3, 8, 1, 2"
                     style="flex: 1;"
+                    aria-label="Custom array input"
                   />
-                  <button class="btn btn-primary" id="apply-array-btn" title="Apply Custom Array (or press Enter)">
+                  <button class="btn btn-primary" id="apply-array-btn" title="Apply Custom Array (or press Enter)" aria-label="Apply custom array">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <polyline points="20 6 9 17 4 12"></polyline>
                     </svg>
@@ -122,7 +123,7 @@ export class SortingPage {
 
               <!-- Quick Action Buttons -->
               <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
-                <button class="btn btn-secondary" id="generate-random-btn" title="Generate a fresh random array">
+                <button class="btn btn-secondary" id="generate-random-btn" title="Generate a fresh random array" aria-label="Generate random array">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
                   </svg>
@@ -130,7 +131,7 @@ export class SortingPage {
                 </button>
 
                 <div class="form-group" style="margin-bottom: 0; min-width: 140px;">
-                  <select id="preset-select" class="form-select" title="Preset datasets">
+                  <select id="preset-select" class="form-select" title="Preset datasets" aria-label="Preset datasets">
                     <option value="" disabled selected>Preset...</option>
                     <option value="nearlySorted">Nearly Sorted</option>
                     <option value="reverse">Reverse Sorted</option>
@@ -230,7 +231,7 @@ export class SortingPage {
 
               <!-- Step Progress Scrubber -->
               <div class="controls-scrubber-group">
-                <input type="range" id="ctrl-scrubber" class="range-slider" min="0" max="10" value="0" />
+                <input type="range" id="ctrl-scrubber" class="range-slider" min="0" max="10" value="0" aria-label="Step progress scrubber" />
                 <span class="step-counter-text" id="ctrl-step-text">Step 1 of 1</span>
               </div>
 
@@ -247,6 +248,7 @@ export class SortingPage {
                   value="${userPrefs.animationSpeedMs || 350}" 
                   style="width: 100px;"
                   title="Playback delay in milliseconds"
+                  aria-label="Playback delay speed in milliseconds"
                 />
               </div>
             </div>

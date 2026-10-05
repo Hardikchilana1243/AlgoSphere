@@ -91,7 +91,7 @@ export function renderSettings(container) {
             </div>
 
             <div style="display: flex; align-items: center; gap: var(--space-3);">
-              <input type="range" id="default-size-slider" min="6" max="20" value="${currentPrefs.defaultArraySize || 12}" class="range-slider" style="width: 120px;" />
+              <input type="range" id="default-size-slider" min="6" max="20" value="${currentPrefs.defaultArraySize || 12}" class="range-slider" style="width: 120px;" aria-label="Default dataset size slider" />
               <span id="default-size-value" style="font-family: var(--font-mono); font-size: var(--text-sm); font-weight: 600; min-width: 60px;">${currentPrefs.defaultArraySize || 12} items</span>
             </div>
           </div>

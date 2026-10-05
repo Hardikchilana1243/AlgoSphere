@@ -84,7 +84,7 @@ export class PracticeSetsPage {
         <!-- Filter & Search Toolbar -->
         <div class="panel" style="padding: var(--space-4);">
           <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
-            <div style="display: flex; align-items: center; gap: var(--space-3); flex: 1; min-width: 260px; max-width: 600px;">
+            <div class="practice-toolbar-controls" style="display: flex; align-items: center; gap: var(--space-3); flex: 1; min-width: 260px; max-width: 600px;">
               <!-- Search Input -->
               <div style="flex: 1; position: relative;">
                 <input 
@@ -94,6 +94,7 @@ export class PracticeSetsPage {
                   placeholder="Search practice sets by name..."
                   value="${escapeHtml(this.searchQuery)}"
                   style="padding-left: 36px;"
+                  aria-label="Search practice sets by name"
                 />
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); pointer-events: none;">
                   <circle cx="11" cy="11" r="8"></circle>
@@ -103,7 +104,7 @@ export class PracticeSetsPage {
 
               <!-- Filter Dropdown -->
               <div style="min-width: 170px;">
-                <select id="practice-algo-filter" class="form-select">
+                <select id="practice-algo-filter" class="form-select" aria-label="Filter practice sets by algorithm">
                   <option value="all">All Algorithms</option>
                   <optgroup label="Sorting Algorithms">
                     <option value="bubbleSort">Bubble Sort</option>

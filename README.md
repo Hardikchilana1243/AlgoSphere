@@ -1,383 +1,428 @@
 # AlgoSphere 🌐
 > **"Explore algorithms beyond the code."**
 
-AlgoSphere is an interactive algorithm-learning studio designed for computer science students and SDE interview candidates. It transforms abstract sorting and searching algorithms into intuitive, step-by-step visual experiences with synchronized pseudocode, live comparison/swap counters, and asymptotic complexity analysis.
+---
 
-Built specifically to demonstrate strong frontend engineering skills, clean architecture, and modern UI/UX design in software engineering placement interviews.
+## Project Overview
+
+**AlgoSphere** is an interactive, browser-native algorithm-learning studio built specifically for computer science students and software engineering placement candidates. It transforms abstract sorting and searching algorithms into intuitive, deterministic visual experiences. Learners can inspect memory operations, element comparisons, recursive divide-and-conquer boundaries, and pointer adjustments in real time, connecting dynamic visual changes directly to line-by-line synchronized pseudocode.
+
+Designed with a focus on web engineering craftsmanship, AlgoSphere runs entirely on native web standards—HTML5, CSS3, and modern ECMAScript modules (ESM). It operates 100% on the client side with zero external JavaScript frameworks, zero third-party UI libraries, and zero server-side dependencies. It provides deterministic time-travel playback ($O(1)$ stepping forwards and backwards), dynamic runtime telemetry counters, and asymptotic complexity analysis.
+
+In addition to visualization, AlgoSphere features an integrated **Practice Sets Studio** backed by native browser Web Storage (`localStorage`). Users can create, inspect, update, delete (CRUD), filter, and launch custom test arrays directly into the visualization engines to test edge cases, sorted distributions, inverted orders, and duplicate-heavy datasets.
 
 ---
 
-## 📋 Project Proposal
+## Problem Statement
 
-### 1. Problem Statement
-Many computer science students and software engineering job candidates struggle to develop an intuitive mental model for how fundamental algorithms manipulate memory, traverse data structures, and compare elements. Traditional textbooks and static code snippets fail to capture the dynamic time-evolution of algorithms, leading to rote memorization rather than deep conceptual comprehension.
+Computer science students and software development job candidates frequently struggle to construct accurate mental models for fundamental algorithms when studying from static textbook diagrams, pseudocode blocks, or monochrome terminal traces. Traditional study methods fail to convey:
+1. **Dynamic state evolution**: How pointers, pivots, partitions, and sorted boundaries shift across memory during runtime.
+2. **Execution-to-code mapping**: Which exact line of pseudocode corresponds to a specific comparison, swap, shift, or overwrite.
+3. **Edge-case behavior**: How algorithms behave on inverted arrays, nearly sorted inputs, identical values, and single-element distributions.
+4. **Complexity in practice**: The practical impact of algorithmic optimizations (such as early-exit flags in Bubble Sort or adaptive scanning in Insertion Sort) versus strictly quadratic algorithms like Selection Sort.
 
-### 2. Project Goal & Educational Value
-**AlgoSphere** bridges this gap by creating an interactive, browser-native algorithm studio where learners can:
-- Observe algorithm state transitions with deterministic, step-by-step time-travel.
-- Connect runtime behavior directly to synchronized line-by-line pseudocode.
-- Inspect exact asymptotic complexities ($O(n)$, $O(n^2)$, $O(\log n)$) and see how optimizations (such as early-exit flags) operate in practice.
-- Experiment with customized datasets, duplicates, edge cases, and inverted distributions.
-
-### 3. Target Audience
-- Computer Science undergraduate and graduate students.
-- Coding bootcamp participants and self-taught developers.
-- Software Development Engineer (SDE) interview candidates preparing for technical rounds.
-
-### 4. Technical Scope & Architecture
-- **Strict Web Fundamentals**: Built with pure HTML5, vanilla CSS3, and modern ES6+ JavaScript modules. No external JavaScript libraries, frameworks, build tools, or backend servers.
-- **Responsive Architecture**: Fluid layout supporting mobile, tablet, and widescreen desktop displays.
-- **Client Persistence**: Web Storage (`localStorage`) integration for user settings, animation preferences, and learning progress tracking.
-- **Event-Driven Visualizer**: Clean decoupling between pure algorithm generators (`generateBubbleSortSteps`) and the DOM renderer, supporting $O(1)$ time-travel stepping without re-execution artifacts.
+AlgoSphere solves these challenges by providing an interactive studio where abstract operations become observable, predictable, and measurable.
 
 ---
 
-## 📅 Development Roadmap & Milestone Status
+## Project Goals
 
-- [x] **Day 1 — Bubble Sort Visualizer**:
-  - Implemented decoupled Bubble Sort step generator with complete event snapshots.
-  - Full playback controls (Play, Pause, Step Next, Step Prev, Reset Visualization, Speed adjustment).
-  - Custom dataset input with bounds validation (1–25 elements, integers 1–100, duplicates, edge cases).
-  - Vertical bar visualization with standard AlgoSphere developer-studio color states.
-  - Live 5-metric telemetry (Algorithm, Array Size, Step Progress, Comparisons, Swaps).
-  - Synchronized pseudocode highlighting.
-  - Theory card with $O(n)$ best-case early-exit optimization documentation.
-- [x] **Day 2 — Selection Sort Visualizer**:
-  - Pure event-driven Selection Sort step generator (`generateSelectionSortSteps`) adhering strictly to the shared step schema.
-  - Interactive visualization tracking the current boundary position, current minimum candidate (Amber), comparison elements (Violet), swaps (Pink), and sorted section (Green).
-  - Synchronized 9-line pseudocode highlighting matching algorithm execution steps.
-  - Accurate theoretical complexity cards displaying strict $O(n^2)$ best/average/worst runtime, $O(1)$ space, and instability notice.
-  - Full playback controls (Play, Pause, Step Next, Step Prev, Reset, Scrubber, Speed Slider, Keyboard shortcuts).
-  - Automated test suite with 79 assertions covering standard, sorted, reverse, duplicates, single-element, empty array, and engine integration.
-- [x] **Day 3 — Insertion Sort Visualizer**:
-  - Pure event-driven Insertion Sort step generator (`generateInsertionSortSteps`) adhering strictly to the shared step schema.
-  - Interactive visualization tracking current key element (Amber), sorted prefix comparisons (Violet), rightward element shifts (Pink), and sorted boundary (Green).
-  - Synchronized 10-line pseudocode highlighting matching algorithm execution phases.
-  - Accurate theoretical complexity cards displaying adaptive $O(n)$ best runtime, $O(n^2)$ average/worst runtime, $O(1)$ space, and stability.
-  - Full playback controls (Play, Pause, Step Next, Step Prev, Reset, Scrubber, Speed Slider, Keyboard shortcuts).
-- [x] **Day 4 — Merge Sort Visualizer**:
-  - Pure event-driven Merge Sort step generator (`generateMergeSortSteps`) adhering strictly to the shared step schema.
-  - Interactive divide-and-conquer visualization tracking recursive splits (Amber midpoint), sorted halves comparison (Violet), overwrites into merged positions (Pink), and completed merged regions (Green).
-  - Synchronized 11-line pseudocode highlighting matching split, recursion, compare, overwrite, and remaining copy phases.
-  - Guaranteed $O(n \log n)$ asymptotic runtime across best, average, and worst cases with $O(n)$ auxiliary space and stable ordering.
-  - Comprehensive automated test suite with 77 assertions covering edge cases, stability, arbitrary random arrays, time-travel, and engine integration.
-- [x] **Day 5 — Quick Sort Visualizer**:
-  - Pure event-driven Quick Sort step generator (`generateQuickSortSteps`) with deterministic Lomuto partition scheme and in-place swapping.
-  - Interactive visualization highlighting pivot selection (Amber), partition scanning comparisons (Violet), boundary adjustments and element swaps (Pink), and finalized pivot/single-element sorted states (Green).
-  - Synchronized 13-line pseudocode highlighting corresponding to function recursion, pivot selection, comparison passes, and pivot placement.
-  - Accurate theoretical complexity cards displaying $O(n \log n)$ best/average runtime, $O(n^2)$ worst-case on unbalanced partitions, $O(\log n)$ recursive call stack auxiliary space, in-place categorization, and standard instability explanation.
-  - Comprehensive automated test suite with 105+ assertions covering standard, already-sorted (0 swaps), reverse-sorted, duplicate-heavy, equal-value arrays, edge cases, time-travel engine, and algorithm switching.
-- [x] **Day 6 — Searching Visualizers**:
-  - Linear Search ($O(n)$) sequential inspection with instant found/missing alerts.
-  - Binary Search ($O(\log n)$) logarithmic divide-and-conquer with Low, Mid, High pointer tracking.
-  - Unsorted array detection and 1-click in-place sorting helper.
-- [x] **Day 7 — Practice Sets (CRUD & Web Storage)**:
-  - Complete Create, Read, Update, Delete (CRUD) operations backed by browser `localStorage`.
-  - Storage key `algosphere_practice_sets` with safe JSON parsing and corruption recovery.
-  - Direct integration with Sorting and Searching visualizers via "Visualize" action.
-  - Real-time search by name, algorithm category filter, and modal-based dialogs.
-  - Automated test suite with 73 assertions covering all CRUD operations, unique IDs, and edge cases.
+### Educational Goals
+- Foster intuitive visual comprehension of comparison-based sorting and divide-and-conquer techniques.
+- Bridge the gap between algorithmic theory (Big-O asymptotic bounds) and practical operation counts (comparisons, swaps, shifts, overwrites).
+- Provide immediate, interactive feedback for edge cases (duplicate keys, inverted sequences, already-sorted inputs).
+- Prepare computer science students for technical interview rounds through interactive visualization and placement glossary definitions.
+
+### Technical Goals
+- Adhere strictly to **Web Fundamentals**: 100% pure HTML5, vanilla CSS3, and ES6+ modules with zero external dependencies.
+- Implement an **event-driven, snapshot-based visualizer architecture** supporting instant $O(1)$ backward/forward time-travel without recalculation glitches.
+- Provide a robust **client-side Web Storage (`localStorage`) CRUD system** with complete error handling, validation, and schema resilience.
+- Deliver a modern **Dark Developer Studio** design system with responsive layouts across desktop, tablet, and mobile viewports.
+- Maintain high software quality verified by automated test suites.
 
 ---
 
-## 🎨 Design Direction: Dark Developer Studio
-AlgoSphere is styled as a modern developer tool with a focused, professional SaaS aesthetic:
-- **Canvas Background**: Deep navy (`#0B1020`)
-- **Navigation Sidebar**: Dark slate navy (`#0E1428`)
-- **Surfaces & Panels**: Elevated navy (`#121A30`, `#18223B`)
-- **Structural Borders**: Subtle blue-gray (`#28324D`)
-- **Brand Accent**: Restrained violet (`#8B5CF6`) and violet hover (`#A78BFA`)
-- **Secondary Highlights**: Soft blue (`#60A5FA`)
-- **Semantic State Tokens**:
-  - `Default Array Elements`: Secondary Blue (`#60A5FA`)
-  - `Active Comparison`: Violet (`#8B5CF6`)
-  - `Current Index / Midpoint`: Amber (`#FBBF24`)
-  - `Moving / Swapping / Overwrite`: Pink (`#FB7185`)
-  - `Permanently Sorted`: Emerald Green (`#34D399`)
-  - `Eliminated Search Space`: Dimmed Slate (`#1E293B`)
-- **Typography**: Inter for interface elements; JetBrains Mono for pseudocode, numeric metadata, and array indices.
+## Project Proposal
+
+### 1. Project Description
+AlgoSphere is an educational web application that delivers real-time, interactive visualizations of fundamental sorting and searching algorithms alongside step-by-step pseudocode tracing, empirical telemetry metrics, and custom practice dataset management.
+
+### 2. Objectives
+- Enable users to visualize 5 sorting algorithms (Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, Quick Sort) and 2 searching algorithms (Linear Search, Binary Search).
+- Synchronize visual state transitions with line-by-line pseudocode highlighting.
+- Implement full client-side CRUD workflows for practice datasets using browser Web Storage.
+- Enforce strict validation rules on all user inputs with actionable, accessible error messaging.
+
+### 3. Specifications & Architecture
+- **Client Architecture**: Single-page application (SPA) architecture utilizing native hash routing (`#/dashboard`, `#/sorting`, `#/searching`, `#/practice`, `#/learn`, `#/settings`).
+- **Visualizer Engine**: Decoupled step generator functions (`generateBubbleSortSteps`, `generateQuickSortSteps`, etc.) produce immutable event snapshots consumed by a unified `StepEngine`, `AnimationController`, and `VisualizerRenderer`.
+- **Data Persistence**: Native browser `localStorage` under the storage key `algosphere_practice_sets`, serialized as JSON with corruption recovery.
+- **Design System**: Curated "Dark Developer Studio" aesthetic featuring deep navy canvas (`#0B1020`), slate panels (`#121A30`), violet brand accents (`#8B5CF6`), and semantic state tokens.
+
+### 4. Educational Value
+- **Asymptotic Theory Reinforcement**: Live counters verify theoretical best-, average-, and worst-case complexities in real time.
+- **Placement Preparation**: Integrated CS placement guide covers algorithmic stability, in-place vs. out-of-place memory allocation, comparison lower bounds ($\Omega(n \log n)$), and Big-O efficiency ratings.
+
+### 5. Web Fundamentals Constraints
+- **HTML**: Semantic HTML5 markup, accessible form controls, ARIA landmark regions, and modal dialogs.
+- **CSS**: Vanilla CSS3, custom CSS properties (variables), flexbox, grid, and fluid media queries. Zero CSS frameworks (no Tailwind, Bootstrap, or Sass).
+- **JavaScript**: Pure ES6+ modules (`import`/`export`), object-oriented controllers, native DOM APIs, and zero npm runtime dependencies.
 
 ---
 
-## 🚀 Key Features
+## Features
 
-### 1. Unified Algorithm Dashboard
-- Clean hero section with clear value proposition and primary CTAs.
-- Key telemetry metrics (7 algorithms, 100% deterministic stepping, line-by-line code tracking).
-- Filterable Algorithm Catalog (`All`, `Sorting`, `Searching`) with complexity tags and direct launcher links.
-- 3-step beginner onboarding guide and local learning progress tracking.
-
-### 2. Practice Sets Studio (CRUD Operations + Web Storage)
-- Full **CRUD** workflow for custom algorithm practice arrays.
-- Persistent client storage using browser **`localStorage`** (`algosphere_practice_sets`).
-- **Create**: Add custom named arrays with algorithm targeting and input validation.
-- **Read**: View saved arrays formatted as monospace chips with item counts and timestamps.
-- **Update**: Edit existing practice sets in-place while preserving IDs and creation dates.
-- **Delete**: Remove sets with explicit confirmation modal protection.
-- **Visualize**: 1-click bridge loading any saved practice set directly into the corresponding visualizer.
-- Real-time search and filter controls.
-
-### 2. Sorting Visualizer
-- **Algorithms Implemented**:
-  - **Bubble Sort**: Adjacent-element comparison and swap, largest value bubbles to end of unsorted section, $O(n)$ best-case early-exit optimization, stable.
-  - **Selection Sort**: Unsorted subarray linear scan to identify minimum element, minimum candidate tracking (Amber), comparisons (Violet), in-place swaps (Pink), sorted boundary (Green), strict $O(n^2)$ best/average/worst runtime, not stable in-place.
-  - **Insertion Sort**: Incremental sorted subarray construction, current key tracking (Amber), comparisons against sorted prefix (Violet), rightward shifts (Pink), in-place insertion, adaptive $O(n)$ best-case runtime on sorted data, $O(n^2)$ worst-case, $O(1)$ space, stable.
-  - **Merge Sort**: Divide-and-conquer splitting down to single-element subarrays, linear-time two-way merging, comparison of front elements (Violet), in-place overwrites (Pink), guaranteed $O(n \log n)$ best/average/worst runtime, $O(n)$ auxiliary space, stable.
-  - **Quick Sort**: Partition-based divide-and-conquer using deterministic Lomuto partitioning, pivot selection (Amber), comparisons (Violet), in-place swaps (Pink), finalized pivot placement (Green), $O(n \log n)$ average runtime, $O(n^2)$ worst-case, $O(\log n)$ stack space, in-place, not stable.
-- **Vertical Bar Visualization**: Dynamic height scaling, value badges, and index numbers.
-- **Full Playback Controls**: Play, Pause, Previous Step, Next Step, Reset, and arbitrary Step Scrubbing.
-- **Step Engine**: Snapshot-based architecture guaranteeing instant, bug-free backwards and forwards time travel without recalculation bugs.
-- **Synchronized Pseudocode**: Line-by-line highlighting synchronized with the current execution phase.
-- **Real-Time Telemetry**: Comparison counters, swap/overwrite counters, and active operation explanation banners.
-- **Dataset Generation**: Custom comma-separated input (with bounds validation), plus presets: *Random*, *Nearly Sorted*, *Reverse Sorted*, *Few Unique*.
-
-### 3. Searching Visualizer
-- **Supported Algorithms**: Linear Search ($O(n)$) and Binary Search ($O(\log n)$).
-- **Horizontal Cell Stage**: Value boxes with index numbers and dynamic pointer badges (`Low`, `Mid`, `High`, `Current`).
-- **Eliminated Search Space**: Dimmed cells show active narrowing of the search space in real-time.
-- **Sorted Array Guard**: If an unsorted array is loaded into Binary Search, a warning banner alerts the user and provides a 1-click `[Sort Array Now]` button.
-- **Result Announcement Banner**: Instant visual confirmation of target found/not-found status with total comparisons.
-
-### 4. Learn Studio
-- **Sorting Fundamentals**: In-place vs. out-of-place, stability, and comparison-based lower bounds ($\Omega(n \log n)$).
-- **Searching Fundamentals**: Sequential scan vs. divide-and-conquer, integer overflow prevention in midpoint calculation.
-- **Big-O Reference Cheat Sheet**: Full table covering $O(1)$ through $O(n^2)$ with efficiency ratings and canonical examples.
-- **CS Placement Glossary**: Concise definitions for comparison, swap, inversion, pivot, partition, search space, and stability.
-- **Matrix Table**: Side-by-side complexity comparison with instant visualizer launching.
-
-### 5. Studio Settings
-- Palette swatch inspector displaying all exact CSS variables and hex codes.
-- Default animation speed selector (Slow 650ms, Normal 350ms, Fast 120ms).
-- Reduced-motion accessibility toggle with system media query integration.
-- Default dataset size slider.
-- 1-click localStorage reset with toast notification.
+- **Sorting Visualizer Studio**:
+  - 5 core sorting algorithms: Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, Quick Sort.
+  - Proportional vertical bar stage with dynamic height scaling and value badges.
+  - Snapshot-based time travel: Play, Pause, Step Next, Step Previous, Reset, and arbitrary Step Scrubbing.
+  - Dynamic playback speed control (30ms to 1000ms delay).
+  - Synchronized line-by-line pseudocode highlighting.
+  - Live 5-metric telemetry: Active Algorithm, Array Size, Step Progress, Comparisons, and Swaps/Shifts/Writes.
+  - Presets: Random, Nearly Sorted, Reverse Sorted, Few Unique, and Already Sorted.
+  - Custom dataset input with bounds and type validation (1–25 elements, integers 1–100).
+- **Searching Visualizer Studio**:
+  - Linear Search ($O(n)$) sequential scanning with pointer tracking.
+  - Binary Search ($O(\log n)$) logarithmic divide-and-conquer with dynamic pointer markers (`Low`, `Mid`, `High`).
+  - Real-time eliminated search space dimming (`state-eliminated`).
+  - Unsorted array detection with immediate warning banner and 1-click in-place sort helper.
+  - Search result announcement banner confirming target found index or absence with total comparisons made.
+- **Practice Sets Studio (CRUD + Web Storage)**:
+  - Complete Create, Read, Update, Delete (CRUD) workflow for custom datasets.
+  - Persistent storage via browser `localStorage` (`algosphere_practice_sets`).
+  - 1-click **Visualize** bridge loading custom practice arrays directly into Sorting or Searching studios.
+  - Real-time live search by practice set name and filter by target algorithm.
+  - Quick-fill preset pills (`5, 3, 8, 1, 2`, `10, 25, 42, 68, 90`, `Random 7`).
+  - Accessible modal dialogs with keyboard Escape support and validation alerts.
+- **Learn Studio**:
+  - Theoretical sorting fundamentals (comparison lower bounds, stability, in-place categorization).
+  - Searching fundamentals (sequential scan vs. divide-and-conquer, midpoint overflow prevention).
+  - Comprehensive Big-O reference cheat sheet table ($O(1)$ through $O(n^2)$).
+  - Side-by-side algorithm comparison matrix with direct visualizer launch buttons.
+  - Compact CS Placement Glossary with essential interview definitions.
+- **Studio Settings**:
+  - Theme palette inspector with all 13 core CSS variables and hex codes.
+  - Playback speed defaults (Slow 650ms, Normal 350ms, Fast 120ms).
+  - Accessibility toggle for reduced-motion mode (`.reduce-motion`).
+  - Default dataset size slider (6 to 20 elements).
+  - Local studio preferences reset with toast notifications.
+- **Responsive Layout**:
+  - Fluid mobile drawer navigation for small viewports ($<768\text{px}$).
+  - Full support across Desktop (1920x1080), Tablet (768x1024), and Mobile (390x844).
+  - Zero horizontal overflow and touch-friendly controls.
 
 ---
 
-## 🛠️ Strict Technology Constraints
-AlgoSphere is intentionally built with **100% pure vanilla web technologies**:
-- **HTML5**: Semantic tags (`<aside>`, `<header>`, `<main>`, `<article>`, `<section>`, `<table>`).
-- **CSS3**: Native CSS custom properties, flexbox, CSS grid, backdrop filters, and responsive media queries.
-- **Vanilla JavaScript**: Modern ES6+ modules (`import`/`export`), classes, and event dispatching.
-- **Zero External Dependencies**: No React, Vue, Angular, Svelte, Tailwind, or jQuery.
-- **Zero Build Tools**: No Webpack, Vite, Rollup, Babel, or npm scripts needed to run.
-- **Zero Backend / Server APIs**: Runs entirely client-side as a static web application.
+## Algorithms Implemented
+
+### Sorting Algorithms
+1. **Bubble Sort**:
+   - **Type**: Comparison-based, in-place, stable.
+   - **Time Complexity**: Best $O(n)$ (with early-exit optimization), Average $O(n^2)$, Worst $O(n^2)$.
+   - **Space Complexity**: Auxiliary $O(1)$.
+   - **Mechanism**: Iteratively steps through adjacent element pairs, bubbling the largest unsorted value to the end. Halts in $O(n)$ if a complete pass occurs with zero swaps.
+2. **Selection Sort**:
+   - **Type**: Comparison-based, in-place, not stable (standard swap).
+   - **Time Complexity**: Best $O(n^2)$, Average $O(n^2)$, Worst $O(n^2)$.
+   - **Space Complexity**: Auxiliary $O(1)$.
+   - **Mechanism**: Scans the unsorted subarray to locate the minimum element, then performs a single swap placing it into the sorted boundary. Fixed $n(n - 1)/2$ comparisons on all inputs.
+3. **Insertion Sort**:
+   - **Type**: Comparison-based, in-place, stable, adaptive.
+   - **Time Complexity**: Best $O(n)$ (on pre-sorted inputs), Average $O(n^2)$, Worst $O(n^2)$.
+   - **Space Complexity**: Auxiliary $O(1)$.
+   - **Mechanism**: Incrementally constructs the sorted prefix by picking each key and shifting greater elements rightward to insert the key into its sorted slot.
+4. **Merge Sort**:
+   - **Type**: Divide-and-conquer, out-of-place, stable.
+   - **Time Complexity**: Best $O(n \log n)$, Average $O(n \log n)$, Worst $O(n \log n)$.
+   - **Space Complexity**: Auxiliary $O(n)$.
+   - **Mechanism**: Recursively splits arrays down to single-element subarrays, then merges adjacent sorted lists in linear time with stable tie-breaking.
+5. **Quick Sort**:
+   - **Type**: Divide-and-conquer, partitioning, in-place, not stable.
+   - **Time Complexity**: Best $O(n \log n)$, Average $O(n \log n)$, Worst $O(n^2)$ (unbalanced partitions).
+   - **Space Complexity**: Call stack $O(\log n)$ average, $O(n)$ worst.
+   - **Mechanism**: Deterministic Lomuto partitioning selects the last element as pivot, rearranges smaller elements to the left and larger elements to the right, and recursively sorts sub-partitions.
+
+### Searching Algorithms
+1. **Linear Search**:
+   - **Type**: Sequential search, in-place.
+   - **Time Complexity**: Best $O(1)$, Average $O(n)$, Worst $O(n)$.
+   - **Space Complexity**: Auxiliary $O(1)$.
+   - **Requirement**: Operates on arbitrary, unsorted or sorted arrays.
+   - **Mechanism**: Examines elements sequentially from index 0 until the target is located or the array is exhausted.
+2. **Binary Search**:
+   - **Type**: Divide-and-conquer, logarithmic search, in-place.
+   - **Time Complexity**: Best $O(1)$, Average $O(\log n)$, Worst $O(\log n)$.
+   - **Space Complexity**: Auxiliary $O(1)$.
+   - **Requirement**: Requires monotonically sorted array.
+   - **Mechanism**: Evaluates the midpoint element. If equal to target, search terminates; if smaller, searches the right half; otherwise searches the left half, halving candidate space at each step.
 
 ---
 
-## 📁 Directory Structure
+## CRUD Operations
+
+AlgoSphere implements complete **CRUD (Create, Read, Update, Delete)** operations on practice datasets, fulfilling the mandatory Web Storage and state management curriculum requirements:
+
+- **Create**:
+  - Click **"New Practice Set"** from the Practice Sets workspace or Dashboard hero.
+  - Enter a descriptive dataset name (2–50 characters).
+  - Select any of the 7 supported sorting or searching algorithms.
+  - Provide a custom comma-separated integer array (1–25 elements, values 1–100) or click quick-fill presets (`5, 3, 8, 1, 2`, `10, 25, 42, 68, 90`, `Random 7`).
+  - Validation ensures name uniqueness (case-insensitive), bounds compliance, and integer integrity.
+  - Upon submission, a unique collision-free ID is generated, ISO timestamps (`createdAt`, `updatedAt`) are assigned, the record is prepended to `localStorage`, and the UI updates immediately with toast confirmation.
+- **Read**:
+  - Saved datasets load persistently from `localStorage` whenever navigating to `#/practice`.
+  - Cards display the dataset name, target algorithm badge, array formatted as monospace value chips, item count, and formatted date.
+  - Real-time search filters datasets by name as the user types.
+  - Algorithm dropdown filters cards by category or specific algorithm.
+  - If no practice sets exist, an empty state panel provides an onboarding message and direct creation trigger.
+- **Update**:
+  - Click **"Edit"** on any practice card to open the modal preloaded with the existing values.
+  - Validation enforces name uniqueness (allowing the same record to keep its existing name), algorithm validity, and array limits.
+  - Upon saving, only the selected record is updated in `localStorage`:
+    - The record's unique `id` and initial `createdAt` timestamp remain unchanged.
+    - The `updatedAt` timestamp is updated to the current time.
+    - All other practice sets remain unmutated.
+  - The cards grid re-renders immediately without requiring a full page refresh.
+- **Delete**:
+  - Click **"Delete"** on any card to display a dedicated confirmation modal naming the specific dataset.
+  - Clicking Cancel dismisses the dialog with zero state mutations.
+  - Clicking Confirm permanently removes that record from `localStorage`, displays an informational toast, and updates the grid.
+  - If the last remaining set is deleted, the interface transitions gracefully back to the empty state.
+
+---
+
+## Web Storage
+
+AlgoSphere utilizes the browser's native **`localStorage`** API because the studio is architected intentionally as a frontend-only client web application:
+- **Zero Latency**: Data access and mutations occur synchronously on the client.
+- **Offline Capable**: Works completely offline without internet connectivity or database infrastructure.
+- **Data Hygiene & Security**: No passwords, API keys, tokens, or sensitive personal information are ever requested or stored.
+- **Defensive Error Handling**: Safe `getItem` and `setItem` wrappers catch `QuotaExceededError` and `SyntaxError` exceptions. Corrupted or invalid JSON data recovers gracefully to an empty array rather than crashing the client.
+
+**Primary Storage Keys**:
+```
+algosphere_practice_sets       # Practice sets array (CRUD records)
+algosphere_user_preferences   # Playback speed, reduced motion, default array size
+algosphere_completed_algos    # Explored algorithm tracking IDs
+```
+
+---
+
+## Technology Stack
+
+- **HTML5**: Semantic elements (`<aside>`, `<header>`, `<main>`, `<article>`, `<section>`, `<table>`, `<dialog>`), form accessibility, and ARIA landmarks.
+- **CSS3**: Vanilla CSS with native CSS custom properties (variables), flexbox, grid, backdrop filters, keyframe animations, and media queries.
+- **Vanilla JavaScript**: Modern ES6+ modules (`import`/`export`), class-based controllers, closures, array methods, and event dispatchers.
+- **Web Storage**: Browser `localStorage` for persistent client data management.
+- **Zero Frameworks / Libraries**: Pure vanilla code with zero external runtime dependencies.
+
+---
+
+## HTML Concepts Used
+
+- **Semantic Layout Elements**: `<header>`, `<aside>`, `<main>`, `<section>`, `<article>`, `<nav>`, `<footer>` providing clear landmark structure.
+- **Form Controls & Inputs**: Text inputs, numeric inputs, range sliders (`<input type="range">`), select dropdowns (`<select>`, `<optgroup>`), buttons, and checkboxes.
+- **Form Validation Attributes**: `required`, `maxlength`, `min`, `max`, `step`.
+- **Accessible ARIA Attributes**: `aria-label`, `aria-hidden`, `aria-live="polite"`, `role="dialog"`, `aria-labelledby`.
+- **Tabular Data Markup**: `<table>`, `<thead>`, `<tbody>`, `<tr>`, `<th>`, `<td>` for Big-O reference and complexity matrix tables.
+- **Dynamic DOM Containers**: Dedicated mounting viewports for SPA route controllers, modals, and toasts.
+
+---
+
+## CSS Concepts Used
+
+- **CSS Custom Properties (Variables)**: Centralized design token system (`--bg`, `--panel`, `--primary`, `--border`, `--font-mono`, `--space-4`, etc.).
+- **CSS Flexbox**: One-dimensional alignment for navigation bars, button toolbars, header breadcrumbs, and card headers.
+- **CSS Grid**: Two-dimensional layouts for dashboard metrics (`.stat-grid`), practice sets (`.practice-sets-grid`), algorithm catalog cards, and complexity grids.
+- **Responsive Media Queries**: Breakpoints at `1024px` (tablet), `768px` (mobile drawer, stacked toolbar), and `480px` (small mobile, condensed labels).
+- **Glassmorphism & Surface Elevation**: `backdrop-filter: blur()`, semi-transparent navy surfaces, and subtle box shadows.
+- **Transitions & Keyframe Animations**: Smooth hover transitions, pointer bounce animations (`@keyframes pointer-bounce`), and toast entry transitions (`@keyframes toast-in`).
+- **Accessibility Modes**: `@media (prefers-reduced-motion)` and `.reduce-motion` utility classes disabling animations for sensitive users.
+
+---
+
+## JavaScript Concepts Used
+
+- **ES6 Modules**: Modular architecture with explicit `import` and `export` statements across components, pages, algorithms, and utilities.
+- **DOM Manipulation & Traversal**: Dynamic element creation, template string interpolation with HTML escaping, class toggling, and query selectors.
+- **Event Handling & Delegation**: `click`, `input`, `change`, `keydown` (Space, Left/Right arrows, R, Enter, Escape), `DOMContentLoaded`, and `hashchange`.
+- **Asynchronous Execution & Timers**: Deterministic timer management using `setTimeout` and `clearTimeout` guarded by generation counters to prevent race conditions.
+- **Data Structures**: Arrays, Sets, Maps, and immutable object snapshots.
+- **JSON Serialization**: `JSON.stringify()` and `JSON.parse()` with try/catch error handling.
+- **Clean Architecture & Separation of Concerns**: Decoupled pure algorithm logic (zero DOM dependencies) from visualization rendering and animation scheduling.
+
+---
+
+## Project Structure
 
 ```
 algosphere/
-├── index.html                   # HTML5 entry point & semantic shell
+├── .gitignore                   # Version control ignore rules (IDE, logs, env, dependencies)
+├── index.html                   # HTML5 semantic entry point shell
+├── LICENSE                      # MIT Open Source License
+├── package.json                 # Project metadata & test scripts
+├── package-lock.json            # Lockfile
 ├── README.md                    # Project documentation & architectural guide
 ├── css/
-│   ├── variables.css            # Dark Developer Studio design tokens
+│   ├── components.css           # Panels, buttons, badges, alerts, modals, toasts
+│   ├── layout.css               # Shell layout, sticky header, sidebar navigation
 │   ├── reset.css                # Base reset, typography, and scrollbar styling
-│   ├── layout.css               # Sidebar (240px), header, main viewport layout
-│   ├── components.css           # Reusable panels, buttons, badges, alerts, toasts
-│   ├── visualizer.css           # Vertical bars, horizontal cells, pointers, pseudocode
-│   └── responsive.css           # Tablet & mobile drawers, stacked layouts
+│   ├── responsive.css           # Breakpoints for tablet (1024px) & mobile (768px/480px)
+│   ├── variables.css            # Dark Developer Studio design tokens & color variables
+│   └── visualizer.css           # Vertical bars, horizontal cells, pointers, pseudocode
 ├── js/
-│   ├── app.js                   # Application bootstrap and module orchestration
-│   ├── router.js                # Hash-based SPA router with query parameters
-│   ├── state.js                 # Global application state and toast dispatching
-│   ├── data/
-│   │   ├── algorithmMetadata.js # Metadata, complexities, tags, and pseudocode
-│   │   └── learningContent.js   # Guides, Big-O table, and glossary terms
+│   ├── app.js                   # Application bootstrap and module initialization
+│   ├── router.js                # Hash-based SPA client router
+│   ├── state.js                 # Global application state and toast notifications
+│   ├── algorithms/
+│   │   ├── searching/
+│   │   │   ├── binarySearch.js  # Binary search step generator
+│   │   │   └── linearSearch.js  # Linear search step generator
+│   │   └── sorting/
+│   │       ├── bubbleSort.js    # Bubble sort step generator
+│   │       ├── insertionSort.js # Insertion sort step generator
+│   │       ├── mergeSort.js     # Merge sort step generator
+│   │       ├── quickSort.js     # Quick sort step generator
+│   │       └── selectionSort.js # Selection sort step generator
 │   ├── components/
-│   │   ├── sidebar.js           # Navigation links and mobile drawer controller
-│   │   ├── header.js            # Breadcrumbs, quick links, and mobile menu button
-│   │   └── algorithmCard.js     # Reusable catalog and matrix card component
+│   │   ├── algorithmCard.js     # Reusable algorithm catalog card
+│   │   ├── header.js            # Top header breadcrumbs and mobile menu trigger
+│   │   └── sidebar.js           # Desktop & mobile drawer navigation sidebar
+│   ├── data/
+│   │   ├── algorithmMetadata.js # Algorithm metadata, complexities, and pseudocode
+│   │   └── learningContent.js   # Educational guides, Big-O reference, and glossary
 │   ├── pages/
 │   │   ├── dashboard.js         # Dashboard page controller
-│   │   ├── sorting.js           # Sorting visualizer controller
-│   │   ├── searching.js         # Searching visualizer controller
-│   │   ├── practiceSets.js      # Practice sets CRUD & localStorage controller
 │   │   ├── learn.js             # Learn studio page controller
-│   │   └── settings.js          # Settings page controller
-│   ├── algorithms/
-│   │   ├── sorting/
-│   │   │   ├── bubbleSort.js    # Bubble sort event generator
-│   │   │   ├── selectionSort.js # Selection sort event generator
-│   │   │   ├── insertionSort.js # Insertion sort event generator
-│   │   │   ├── mergeSort.js     # Merge sort event generator
-│   │   │   └── quickSort.js     # Quick sort event generator
-│   │   └── searching/
-│   │       ├── linearSearch.js  # Linear search event generator
-│   │       └── binarySearch.js  # Binary search event generator
-│   ├── visualizer/
-│   │   ├── renderer.js          # DOM updater for bars, cells, pointers, code
-│   │   ├── stepEngine.js        # Deterministic step cursor and snapshot manager
-│   │   ├── animationController.js # Timer coordination and race-condition prevention
-│   │   └── controls.js          # UI button bindings and keyboard shortcuts
-│   └── utils/
-│       ├── validation.js        # Array string parsing, bounds & CRUD checking
-│       ├── arrayUtils.js        # Dataset generators and sorted checker
-│       └── storage.js           # Safe localStorage persistence & CRUD layer
+│   │   ├── practiceSets.js      # Practice sets CRUD & Web Storage controller
+│   │   ├── searching.js         # Searching visualizer controller
+│   │   ├── settings.js          # Studio settings page controller
+│   │   └── sorting.js           # Sorting visualizer controller
+│   ├── utils/
+│   │   ├── arrayUtils.js        # Dataset generators and isSorted helper
+│   │   ├── storage.js           # Safe localStorage persistence and CRUD utility
+│   │   └── validation.js        # Array and practice set validation utilities
+│   └── visualizer/
+│       ├── animationController.js # Timer coordination and race-condition prevention
+│       ├── controls.js          # UI button bindings and keyboard shortcuts
+│       ├── renderer.js          # DOM updater for bars, cells, pointers, code
+│       └── stepEngine.js        # Deterministic step cursor and snapshot manager
 └── tests/
-    ├── manual-test-checklist.md # Structured verification protocol
-    ├── test-day1.js             # Bubble sort automated verification
-    ├── test-selectionSort.js    # Selection sort automated verification
-    ├── test-insertionSort.js    # Insertion sort automated verification
-    ├── test-mergeSort.js        # Merge sort automated verification
-    ├── test-quickSort.js        # Quick sort automated verification
-    └── test-practiceSets.js     # Practice sets CRUD & storage verification
+    ├── manual-test-checklist.md # Structured end-to-end verification checklist
+    ├── test-day1.js             # Bubble sort automated tests (44 assertions)
+    ├── test-selectionSort.js    # Selection sort automated tests (79 assertions)
+    ├── test-insertionSort.js    # Insertion sort automated tests (73 assertions)
+    ├── test-mergeSort.js        # Merge sort automated tests (77 assertions)
+    ├── test-quickSort.js        # Quick sort automated tests (105 assertions)
+    ├── test-searching.js        # Searching visualizers automated tests (100 assertions)
+    └── test-practiceSets.js     # Practice sets CRUD & storage tests (73 assertions)
 ```
 
 ---
 
-# CRUD Operations
+## Prerequisites
 
-AlgoSphere implements full **CRUD (Create, Read, Update, Delete)** operations on saved algorithm practice sets, fulfilling the mandatory Web Storage and data management requirement for the Web Fundamentals curriculum.
-
-### Create
-Users can create saved practice sets:
-- Click **"New Practice Set"** from the Practice Sets workspace or Dashboard hero.
-- Enter a unique, human-readable dataset name (e.g., `"My Sorting Test"`, `"Binary Search Edge Cases"`).
-- Select a target algorithm from any of the 7 supported sorting or searching algorithms.
-- Provide a custom comma-separated integer array (1–25 elements, values 1–100) or choose from quick presets (`5, 3, 8, 1, 2`, `10, 25, 42, 68, 90`, or `Random 7`).
-- Form validation verifies name uniqueness, character length, element counts, integer validity, and bounds.
-- Upon submission, the practice set is assigned a collision-free unique identifier, stamped with ISO timestamps (`createdAt`, `updatedAt`), persisted to browser storage, and immediately rendered at the top of the dataset grid with feedback.
-
-### Read
-Saved practice sets are loaded from `localStorage`:
-- When navigating to the Practice Sets workspace (`#/practice`), all saved datasets are read and parsed from client storage.
-- Each practice set is presented in a card displaying:
-  - Dataset name
-  - Target algorithm badge (e.g. `Bubble Sort` or `Binary Search`)
-  - Array preview formatted as monospace value chips
-  - Total item count and last updated timestamp
-  - Direct action triggers: **Visualize**, **Edit**, and **Delete**
-- **Search & Filter**: Users can filter practice sets in real-time by dataset name and target algorithm category.
-- **Empty State**: When no practice sets exist, a polished empty state banner explains the feature and provides an immediate creation button.
-- **Corruption Resilience**: If storage data is missing or corrupted, the system catches the syntax error gracefully and recovers with an empty state rather than crashing.
-
-### Update
-Users can edit saved practice sets:
-- Clicking the **"Edit"** button on any practice set opens the modal dialog preloaded with existing values (name, algorithm, array).
-- Validation executes upon submission to ensure updated data remains strictly compliant.
-- The update operation modifies **only** the selected practice set in `localStorage`:
-  - The record's unique `id` and initial `createdAt` timestamp are strictly preserved.
-  - The `updatedAt` timestamp is updated to the current time.
-  - Unrelated practice sets are completely unmutated.
-- The UI refreshes immediately without requiring a full page reload.
-
-### Delete
-Users can remove saved practice sets:
-- Clicking the **"Delete"** button on any card opens a confirmation dialog clearly naming the targeted dataset to prevent accidental deletion.
-- Upon confirmation, only that specific record is removed from `localStorage`.
-- Immediate UI synchronization updates the grid and displays a confirmation toast.
-- Deleting the last remaining practice set returns the view to the empty state cleanly.
+Because AlgoSphere is built with pure web technologies and native ES Modules:
+- A modern web browser supporting ES6 modules (Chrome, Edge, Firefox, Safari).
+- A local HTTP static file server (ES Modules require HTTP/HTTPS protocol due to browser CORS policies on `file:///` URLs).
+- Optional: Node.js (v16+) to run the automated test suite.
 
 ---
 
-### Web Storage
+## How to Run
 
-AlgoSphere uses browser **`localStorage`** because the application is built intentionally as a frontend-only, client-side web application. It does not require a backend server, database (such as MongoDB or Firebase), or external API keys.
-
-Using native Web Storage ensures:
-- **Zero latency**: Data operations execute synchronously on the client.
-- **Offline availability**: The studio operates completely offline without internet connectivity.
-- **Data hygiene**: No passwords, API keys, or sensitive personal data are ever stored.
-
-**Primary LocalStorage Key**:
-```
-algosphere_practice_sets
-```
-
-All practice set records are serialized and parsed using centralized, fault-tolerant utilities in [js/utils/storage.js](file:///c:/Users/pc/Desktop/Frontend%20Project/js/utils/storage.js).
-
----
-
-### Visualize Integration
-The **"Visualize"** button bridges Practice Sets with AlgoSphere's visualizer studios:
-- Clicking **Visualize** inspects the dataset's selected algorithm.
-- If the algorithm is a sorting algorithm (Bubble, Selection, Insertion, Merge, Quick Sort), AlgoSphere routes to `#/sorting` with the selected algorithm and practice array loaded into the bar visualizer.
-- If the algorithm is a searching algorithm (Linear or Binary Search), AlgoSphere routes to `#/searching` with the algorithm, custom array, and search target loaded into the pointer visualizer.
-- The step engine immediately builds deterministic execution steps, allowing learners to click Play or step forwards/backwards instantly.
-
----
-
-## ⚙️ How to Run the Project
-
-Because AlgoSphere uses native JavaScript ES Modules (`type="module"`), modern browsers require it to be served over HTTP/HTTPS rather than `file:///` (due to browser CORS rules on local modules).
-
-### Option 1: Python HTTP Server (Recommended)
+### Step 1: Obtain the Project
+Clone or download the repository to your local computer:
 ```bash
-# In the project directory:
+git clone https://github.com/Hardikchilana1243/AlgoSphere.git
+cd AlgoSphere
+```
+
+### Step 2: Start a Local Server
+Start any lightweight local static server in the project directory:
+
+**Using Python (pre-installed on most systems)**:
+```bash
 python -m http.server 8000
 ```
-Then open: [http://localhost:8000](http://localhost:8000)
 
-### Option 2: Node npx serve
+**Using Node.js `npx serve`**:
 ```bash
 npx -y serve .
 ```
 
-### Option 3: VS Code / IDE Live Server
+**Using VS Code Live Server**:
 Right-click `index.html` and select **"Open with Live Server"**.
 
----
-
-## 🏛️ Architecture Overview
-
+### Step 3: Open in Browser
+Navigate to the local server URL in your browser:
 ```
- [ User Action: Play / Step / Input ]
-                 │
-                 ▼
-     ┌──────────────────────┐
-     │   Algorithm Logic    │  Pure functions, zero DOM dependencies.
-     │  (e.g. bubbleSort)   │  Takes array, returns immutable Step[] array.
-     └───────────┬──────────┘
-                 │ Step[]
-                 ▼
-     ┌──────────────────────┐
-     │     Step Engine      │  Maintains currentIndex.
-     │   (Immutable State)  │  Enables O(1) instant back/forward jumping.
-     └───────────┬──────────┘
-                 │ currentStep
-                 ├───────────────────────────────┐
-                 ▼                               ▼
-     ┌──────────────────────┐        ┌──────────────────────┐
-     │ Animation Controller │        │ Visualizer Renderer  │
-     │  (Generation-token   │        │  - Scaled Bars/Cells │
-     │   timer management)  │        │  - Pointers          │
-     └──────────────────────┘        │  - Pseudocode Line   │
-                                     │  - Telemetry Counter │
-                                     └──────────────────────┘
+http://localhost:8000
 ```
 
-### Snapshot-Based Step Model
-Traditional algorithm visualizers often use async `await sleep()` loops inside the sorting algorithm itself, causing hard-to-fix bugs with pause/resume and making "Previous Step" virtually impossible.
-
-AlgoSphere uses an **event-and-snapshot engine**:
-1. Algorithms execute synchronously to produce a lightweight array of step objects.
-2. Each step contains a complete snapshot of the array at that moment, the indices being compared/swapped, the active line number in pseudocode, and a human-readable explanation.
-3. Stepping backwards or scrubbing to any arbitrary step is simply index movement: `arr = steps[i].array`. It is 100% deterministic, instant, and impossible to desynchronize.
-4. An incrementing `generation` token ensures that clicking Pause or Reset immediately invalidates any pending timeout callbacks, preventing overlapping timers.
+### Step 4: Run the Automated Tests (Optional)
+To execute the automated verification test suite:
+```bash
+npm test
+```
 
 ---
 
-## ⌨️ Keyboard Shortcuts
+## Testing
 
-| Key | Action |
-|---|---|
-| <kbd>Space</kbd> | Toggle Play / Pause |
-| <kbd>→</kbd> (Right Arrow) | Next Step |
-| <kbd>←</kbd> (Left Arrow) | Previous Step |
-| <kbd>R</kbd> | Reset to initial array state |
+AlgoSphere incorporates both automated verification suites and a structured manual checklist:
+
+### Automated Test Suite Results
+All test suites execute natively in Node.js (`type: module`) without requiring heavy testing frameworks. Every assertion is verified:
+
+| Test File | Target Component | Assertions | Status |
+|---|---|:---:|:---:|
+| `tests/test-day1.js` | Bubble Sort & Base Validation | 44 | **PASSED** |
+| `tests/test-selectionSort.js` | Selection Sort & Engine Integration | 79 | **PASSED** |
+| `tests/test-insertionSort.js` | Insertion Sort & Key Shifts | 73 | **PASSED** |
+| `tests/test-mergeSort.js` | Merge Sort & Divide-and-Conquer | 77 | **PASSED** |
+| `tests/test-quickSort.js` | Quick Sort & Lomuto Partitioning | 105 | **PASSED** |
+| `tests/test-searching.js` | Linear & Binary Search, Pointers, Bounds | 100 | **PASSED** |
+| `tests/test-practiceSets.js` | Practice Sets CRUD, Storage & Corruption | 73 | **PASSED** |
+| **TOTAL** | **Full Application Verification** | **551** | **551 / 551 PASSED (100%)** |
+
+### Manual Testing Verification
+- **Functional Testing**: Validated across all 5 sorting algorithms and 2 searching algorithms with custom arrays, randomized datasets, preset distributions, step scrubbing, speed adjustments, and keyboard shortcuts.
+- **CRUD Operations**: Verified Create, Read, Update, Delete, and persistence across browser refreshes with zero duplicate records or unintended deletions.
+- **Responsive Testing**: Verified layout integrity, touch targets, and navigation drawer on Desktop (1920x1080), Tablet (768x1024), and Mobile (390x844).
+- **Console / Runtime**: 0 unexpected JavaScript console errors during navigation, visualization, sorting, searching, or storage operations.
 
 ---
 
-## 🔍 Known Limitations & Edge Cases Handled
-- **Mobile Widths**: On screens narrower than 480px, bar numeric labels above the vertical bars are hidden to prevent text collisions, while the index labels underneath remain visible.
-- **Binary Search on Unsorted Data**: Binary search strictly requires sorted input. AlgoSphere actively tests whether the input array is sorted and displays a prominent warning banner with an immediate 1-click `[Sort Array Now]` helper button.
-- **Array Bounds**: User array input is validated to ensure between 5 and 25 numbers within the range $[1, 100]$. Floating-point values are safely rounded and malformed input displays clear feedback.
+## Screenshots
+
+The AlgoSphere application interface is styled using a custom CSS-rendered **Dark Developer Studio** design system with inline SVG iconography, eliminating dependencies on external image assets:
+- **Dashboard Studio**: Unified hero section, key telemetry metrics, and filterable algorithm catalog.
+- **Sorting Visualizer**: Vertical bar stage with dynamic color states (Blue: Normal, Violet: Comparing, Amber: Key, Pink: Swapping/Moving, Green: Sorted), synchronized pseudocode, and live operation counters.
+- **Searching Visualizer**: Horizontal cell stage with animated pointer badges (`Low`, `Mid`, `High`, `Current`) and real-time eliminated space dimming.
+- **Practice Sets Studio**: Monospace array chip previews, filter toolbar, responsive cards grid, and accessible modal dialogs.
+- **Learn Studio**: Complexity tables, Big-O reference matrix, and placement glossary cards.
 
 ---
 
-## 🔮 Future Improvements
-1. **Additional Data Structures**: Trees (Binary Search Tree traversals) and Graphs (BFS / DFS / Dijkstra).
-2. **Audio Frequency Synthesizer**: Web Audio API tone synthesis pitched to element values during sorting passes.
-3. **Algorithm Comparison Dual-View**: Running two sorting algorithms side-by-side with identical inputs to compare operation counts.
+## Future Enhancements
+
+1. **Additional Data Structures**: Tree traversal visualizers (Binary Search Trees, AVL balance rotations) and Graph algorithms (BFS, DFS, Dijkstra's shortest path).
+2. **Audio Frequency Synthesizer**: Web Audio API tone synthesis mapped to element values during comparison and swap passes.
+3. **Dual Algorithm Comparison**: Side-by-side visualization running two sorting algorithms simultaneously on identical input data to compare empirical operation counts.
+4. **Custom Code Editor**: User-editable pseudocode editor allowing custom algorithm experiments.
+
+---
+
+## License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+---
+
+## Author
+
+**Hardik Chilana**  
+GitHub: [@Hardikchilana1243](https://github.com/Hardikchilana1243)  
+Email: `h2154678@gmail.com`  
+*AlgoSphere — Web Fundamentals Project*

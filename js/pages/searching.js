@@ -91,10 +91,10 @@ export class SearchingPage {
 
         <!-- Input & Target Toolbar -->
         <div class="panel" style="padding: var(--space-4);">
-          <div style="display: grid; grid-template-columns: 1fr 140px auto; gap: var(--space-3); align-items: flex-end;">
+          <div class="visualizer-toolbar-grid" style="display: grid; grid-template-columns: 1fr 140px auto; gap: var(--space-3); align-items: flex-end;">
             <div class="form-group" style="margin-bottom: 0;">
               <label for="search-array-input" class="form-label">
-                <span>Array (Comma-separated numbers 1–100, 5–16 items)</span>
+                <span>Array (Comma-separated numbers 1–100, 1–25 items)</span>
                 <span id="search-array-count" style="font-family: var(--font-mono); color: var(--secondary);">${this.currentArray.length} items</span>
               </label>
               <input 
@@ -102,6 +102,7 @@ export class SearchingPage {
                 id="search-array-input" 
                 class="form-input" 
                 value="${this.currentArray.join(', ')}" 
+                aria-label="Search dataset array"
               />
             </div>
 
@@ -258,7 +259,7 @@ export class SearchingPage {
                 </div>
 
                 <div style="margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--border-subtle); font-size: var(--text-xs); color: var(--muted);">
-                  <span>Requirement: <strong style="color: var(--text);">${isBinary ? 'Sorted Array Required' : 'Works on Any Array'}</strong></span>
+                  <span>Requirement: <strong id="search-requirement-text" style="color: var(--text);">${isBinary ? 'Sorted Array Required' : 'Works on Any Array'}</strong></span>
                 </div>
               </div>
             </div>
@@ -380,8 +381,8 @@ export class SearchingPage {
       this.rebuildStepsAndRender(container);
     });
 
-    arrayInput.addEventListener('change', () => {
-      const res = Validation.parseArrayInput(arrayInput.value, 5, 16, 1, 100);
+    const applyArrayChanges = () => {
+      const res = Validation.parseArrayInput(arrayInput.value, 1, 25, 1, 100);
       if (!res.isValid) {
         errorAlert.textContent = res.error;
         errorAlert.style.display = 'block';
@@ -392,9 +393,9 @@ export class SearchingPage {
         this.checkSortedRequirement(container);
         this.rebuildStepsAndRender(container);
       }
-    });
+    };
 
-    targetInput.addEventListener('change', () => {
+    const applyTargetChanges = () => {
       const res = Validation.parseTargetInput(targetInput.value, 1, 100);
       if (!res.isValid) {
         errorAlert.textContent = res.error;
@@ -403,6 +404,22 @@ export class SearchingPage {
         errorAlert.style.display = 'none';
         this.currentTarget = res.value;
         this.rebuildStepsAndRender(container);
+      }
+    };
+
+    arrayInput.addEventListener('change', applyArrayChanges);
+    arrayInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        applyArrayChanges();
+      }
+    });
+
+    targetInput.addEventListener('change', applyTargetChanges);
+    targetInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        applyTargetChanges();
       }
     });
   }
@@ -421,6 +438,32 @@ export class SearchingPage {
     const compCard = container.querySelector('#search-complexity-card');
     if (compCard && algoMeta) {
       compCard.querySelector('#search-complexity-title').textContent = `${algoMeta.name} Theory`;
+      const isBinary = this.currentAlgoKey === 'binarySearch';
+      const grid = compCard.querySelector('.complexity-grid');
+      if (grid) {
+        grid.innerHTML = `
+          <div class="complexity-item">
+            <span class="complexity-label">Best Time</span>
+            <span class="complexity-value" style="color: var(--success);">${algoMeta.complexities.best}</span>
+          </div>
+          <div class="complexity-item">
+            <span class="complexity-label">Average Time</span>
+            <span class="complexity-value" style="color: var(--warning);">${algoMeta.complexities.average}</span>
+          </div>
+          <div class="complexity-item">
+            <span class="complexity-label">Worst Time</span>
+            <span class="complexity-value" style="color: var(--danger);">${algoMeta.complexities.worst}</span>
+          </div>
+          <div class="complexity-item">
+            <span class="complexity-label">Space Complexity</span>
+            <span class="complexity-value" style="color: var(--secondary);">${algoMeta.complexities.space}</span>
+          </div>
+        `;
+      }
+      const reqEl = compCard.querySelector('#search-requirement-text');
+      if (reqEl) {
+        reqEl.textContent = isBinary ? 'Sorted Array Required' : 'Works on Any Array';
+      }
     }
   }
 

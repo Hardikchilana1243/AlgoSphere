@@ -14,10 +14,12 @@ yarn-error.log*
 # Editor / IDE directories
 .idea/
 .vscode/
+.vs/
 *.swp
 *.swo
 
 # Local environment & temporary files
 .env
+.env.*
 .env.local
 .system_generated/
